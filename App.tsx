@@ -70,7 +70,7 @@ function App() {
 
   // Effects
   useEffect(() => {
-    console.log("Armonix 1.1.5 initialized");
+    console.log("Armonix 1.1.7 initialized");
     // Apply dark mode class to HTML element
     if (darkMode) {
       document.documentElement.classList.add('dark');
