@@ -7,8 +7,16 @@ const getGenAI = () => {
   if (genAI) return genAI;
 
   try {
-    if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
-      genAI = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    // VITE PRODUCTION BUILD:
+    // Use import.meta.env.VITE_API_KEY for Vite based apps.
+    // We fallback to process.env for compatibility with other environments.
+    // @ts-ignore - import.meta may not be recognized by all TS configs without explicit setup, but works in Vite
+    const apiKey = import.meta.env.VITE_API_KEY || (typeof process !== 'undefined' && process.env ? process.env.API_KEY : undefined);
+
+    if (apiKey) {
+      genAI = new GoogleGenAI({ apiKey: apiKey });
+    } else {
+      console.warn("Armonix: No API Key found in environment variables.");
     }
   } catch (e) {
     console.error("Armonix: Environment variable access error", e);
@@ -24,7 +32,6 @@ export const fetchChordInsight = async (chordName: string, lang: Language): Prom
   try {
     const model = 'gemini-2.5-flash';
     
-    // Simple mapping for basic language instruction
     const langMap: Record<string, string> = {
       es: "Responde en Español.",
       en: "Respond in English.",
