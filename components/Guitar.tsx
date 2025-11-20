@@ -22,10 +22,6 @@ const Guitar: React.FC<GuitarProps> = ({ voicing, language }) => {
     );
   }
 
-  // Check if any note is beyond fret 5 (shouldn't happen with current dictionary, but for safety)
-  const maxFret = Math.max(...voicing);
-  const startFret = 1;
-
   return (
     <div className="relative flex flex-col items-center py-4 select-none">
       

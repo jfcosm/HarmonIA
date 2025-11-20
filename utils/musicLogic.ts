@@ -1,5 +1,5 @@
-import { NOTES, QUALITIES, EXTENSIONS } from '../constants';
-import { NoteDefinition, ChordExtensionType } from '../types';
+import { QUALITIES, EXTENSIONS } from '../constants';
+import { ChordExtensionType } from '../types';
 
 /**
  * Generates the MIDI numbers for the selected chord.

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Piano from './components/Piano';
 import Guitar from './components/Guitar';
 import Controls from './components/Controls';
