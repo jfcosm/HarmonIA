@@ -1,9 +1,34 @@
-import { GoogleGenAI } from "@google/genai";
+
+import { GoogleGenAI, HarmCategory, HarmBlockThreshold } from "@google/genai";
 import { Language, SongStyle, SongMood, SongTempo, SongComplexity } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Lazy singleton instance to prevent immediate crash on browser load
+let genAI: GoogleGenAI | null = null;
+
+const getGenAI = () => {
+  if (genAI) return genAI;
+
+  try {
+    // The API key must be obtained exclusively from the environment variable process.env.API_KEY.
+    // Assume this variable is pre-configured, valid, and accessible.
+    const apiKey = process.env.API_KEY;
+
+    if (apiKey) {
+      genAI = new GoogleGenAI({ apiKey: apiKey });
+    } else {
+      console.warn("Armonix: API Key missing. AI features will be disabled.");
+    }
+  } catch (e) {
+    console.error("Armonix: Error initializing AI client", e);
+  }
+  
+  return genAI;
+};
 
 export const fetchChordInsight = async (chordName: string, lang: Language): Promise<string> => {
+  const ai = getGenAI();
+  if (!ai) return lang === 'es' ? "Llave API no configurada." : "API Key not configured.";
+
   try {
     const model = 'gemini-2.5-flash';
     
@@ -25,6 +50,14 @@ export const fetchChordInsight = async (chordName: string, lang: Language): Prom
     const response = await ai.models.generateContent({
       model: model,
       contents: prompt,
+      config: {
+        safetySettings: [
+          { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+        ],
+      }
     });
 
     return response.text || (lang === 'es' ? "Sin información." : "No insight available.");
@@ -43,6 +76,9 @@ export const generateSongProgression = async (
   complexity: SongComplexity,
   lang: Language
 ): Promise<string> => {
+  const ai = getGenAI();
+  if (!ai) return lang === 'es' ? "Llave API no configurada." : "API Key not configured.";
+
   try {
     const model = 'gemini-2.5-flash';
     
@@ -81,6 +117,14 @@ export const generateSongProgression = async (
     const response = await ai.models.generateContent({
       model: model,
       contents: prompt,
+      config: {
+        safetySettings: [
+          { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+          { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+        ],
+      }
     });
 
     return response.text || (lang === 'es' ? "No se pudo generar la canción." : "Could not generate song.");
