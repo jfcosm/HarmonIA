@@ -1,3 +1,4 @@
+
 import { NoteDefinition, ChordExtensionType, Language, GuitarVoicing } from './types';
 
 export const NOTES: NoteDefinition[] = [
@@ -35,7 +36,15 @@ export const EXTENSIONS: Record<ChordExtensionType, { name: string, intervals: (
   },
   '9': { 
     name: '9', 
-    intervals: (base) => [...base, 10, 14] 
+    intervals: (base) => [...base, 10, 14] // Dom7 + 9
+  },
+  'add9': {
+    name: 'add9',
+    intervals: (base) => [...base, 14] // Triad + 9 (No 7th)
+  },
+  'maj9': {
+    name: 'maj9',
+    intervals: (base) => [...base, 11, 14] // Maj7 + 9
   },
   'sus2': { 
     name: 'sus2', 
@@ -44,6 +53,10 @@ export const EXTENSIONS: Record<ChordExtensionType, { name: string, intervals: (
   'sus4': { 
     name: 'sus4', 
     intervals: (base) => [base[0], 5, base[2]] 
+  },
+  '7sus4': {
+    name: '7sus4',
+    intervals: () => [0, 5, 7, 10] // Root, 4, 5, b7 (Overrides base)
   },
   '6': {
     name: '6',
@@ -56,63 +69,443 @@ export const EXTENSIONS: Record<ChordExtensionType, { name: string, intervals: (
   'aug': { 
     name: 'aug', 
     intervals: () => [0, 4, 8] 
+  },
+  'm7b5': {
+    name: 'm7b5',
+    intervals: () => [0, 3, 6, 10] // Root, b3, b5, b7 (Overrides base to dim triad + min7)
+  },
+  'maj7#11': {
+    name: 'maj7#11',
+    intervals: (base) => [...base, 11, 18] // Base(Maj), 7, #11
+  },
+  'maj13': {
+    name: 'maj13',
+    intervals: (base) => [...base, 11, 21] // Base(Maj), 7, 13
   }
 };
 
 export const TRANSLATIONS: Record<Language, Record<string, string>> = {
   en: {
-    appTitle: "Harmonix",
+    appTitle: "Armonix",
     appSubtitle: "Piano & Guitar Chord Visualizer",
+    modeVisualizer: "Visualizer",
+    modeComposer: "Song Composer",
     root: "Fundamental / Root",
     quality: "Quality",
     extension: "Variation",
-    aiInsight: "AI Insight",
+    aiInsight: "Additional Information",
     play: "Play",
-    loading: "Loading insight...",
+    loading: "Loading...",
     notation: "Notation",
     major: "Major",
     minor: "Minor",
     basic: "Basic",
     noInsight: "No insight available.",
     apiKeyError: "API Key not configured.",
-    aboutTitle: "What is Harmonix?",
-    aboutText1: "I'm Francisco Carle, musician and creator of Harmonix. As a piano teacher for popular music, I often encounter a barrier: understanding how chords are formed on the piano can be difficult to visualize at first.",
-    aboutText2: "Harmonix was born as a visual support tool to show graphically how chords are constructed. Whether you are learning or just need a quick reminder, this tool is here to help you build chords whenever you need them.",
+    aboutTitle: "What is Armonix?",
+    aboutText1: "I'm Francisco Carle, musician and creator of Armonix. While teaching piano for popular music, I realized that visualizing how chords are constructed on the keyboard is often a significant barrier for students.",
+    aboutText2: "Armonix was born to bridge that gap. It serves as an interactive visual aid to demystify chord formation. Even for experienced musicians, theory can sometimes slip our minds—Armonix is your always-available companion for those moments.",
+    dedication: "I dedicate this web app to Celeste, Helena, Matteo, and Gaspar, our musicians of the future.",
     instrument: "Instrument",
     piano: "Piano",
     guitar: "Guitar",
     close: "Close",
-    guitarNoVoicing: "Voicing unavailable in first 5 frets."
+    guitarNoVoicing: "Voicing unavailable in first 5 frets.",
+    footerText: "Armonix is an application developed with the good energy of",
+    composerTitle: "Song Composer",
+    composerSubtitle: "Generate chord progressions based on your style.",
+    lblStyle: "Style",
+    lblMood: "Mood",
+    lblTempo: "Tempo",
+    lblComplexity: "Complexity",
+    btnCompose: "Compose Song",
+    keyOf: "Key",
+    composerResult: "Result",
+    mood_happy: "Happy",
+    mood_sad: "Sad",
+    mood_melancholic: "Melancholic",
+    mood_energetic: "Energetic",
+    mood_relaxed: "Relaxed",
+    mood_epic: "Epic",
+    mood_meditation: "Meditation",
+    mood_concentration: "Concentration",
+    tempo_slow: "Slow",
+    tempo_moderate: "Moderate",
+    tempo_fast: "Fast",
+    complexity_basic: "Basic",
+    complexity_intermediate: "Intermediate",
+    complexity_advanced: "Advanced",
   },
   es: {
-    appTitle: "Harmonix",
+    appTitle: "Armonix",
     appSubtitle: "Visualizador de Acordes",
+    modeVisualizer: "Visualizador",
+    modeComposer: "Compositor",
     root: "Nota Fundamental",
     quality: "Cualidad",
     extension: "Variación / Tensión",
-    aiInsight: "Info Inteligente",
+    aiInsight: "Información Adicional",
     play: "Tocar",
-    loading: "Cargando info...",
+    loading: "Cargando...",
     notation: "Notación",
     major: "Mayor",
     minor: "Menor",
     basic: "Básico",
     noInsight: "No hay información disponible.",
     apiKeyError: "Llave API no configurada.",
-    aboutTitle: "¿Qué es Harmonix?",
-    aboutText1: "Soy Francisco Carle, músico y creador de Harmonix. Cuando me ha tocado explicar las bases de la interpretación en el piano para música popular, me encuentro con la barrera de entrada de que entender cómo se forman los acordes en el piano es un proceso que cuesta explicar.",
-    aboutText2: "Harmonix nace como un apoyo visual para mostrar gráficamente cómo se forman los acordes. Aunque sepamos la teoría, a veces se nos puede olvidar, y este es una especie de recordatorio para formar acordes cuando sea que lo necesites.",
+    aboutTitle: "¿Qué es Armonix?",
+    aboutText1: "Soy Francisco Carle, músico y creador de Armonix. Cuando me ha tocado explicar las bases de la interpretación en el piano para música popular, me encuentro con la barrera de entrada de que entender cómo se forman los acordes en el piano es un proceso que cuesta explicar.",
+    aboutText2: "Armonix nace como un apoyo visual para mostrar gráficamente cómo se forman los acordes. Aunque sepamos la teoría, a veces se nos puede olvidar, y este es una especie de recordatorio para formar acordes cuando sea que lo necesites.",
+    dedication: "Dedico esta app web a Celeste, Helena, Matteo y Gaspar, nuestros músicos del futuro.",
     instrument: "Instrumento",
     piano: "Piano",
     guitar: "Guitarra",
     close: "Cerrar",
-    guitarNoVoicing: "Posición no disponible en los primeros 5 trastes."
+    guitarNoVoicing: "Posición no disponible en los primeros 5 trastes.",
+    footerText: "Armonix es una aplicación desarrollada con la buena energía de",
+    composerTitle: "Compositor de Canciones",
+    composerSubtitle: "Genera progresiones de acordes basadas en tu estilo.",
+    lblStyle: "Estilo",
+    lblMood: "Ánimo",
+    lblTempo: "Velocidad",
+    lblComplexity: "Complejidad",
+    btnCompose: "Componer Canción",
+    keyOf: "Tonalidad",
+    composerResult: "Resultado",
+    mood_happy: "Feliz",
+    mood_sad: "Triste",
+    mood_melancholic: "Melancólico",
+    mood_energetic: "Enérgico",
+    mood_relaxed: "Relajado",
+    mood_epic: "Épico",
+    mood_meditation: "Meditación",
+    mood_concentration: "Concentración",
+    tempo_slow: "Lento",
+    tempo_moderate: "Moderado",
+    tempo_fast: "Rápido",
+    complexity_basic: "Básico",
+    complexity_intermediate: "Intermedio",
+    complexity_advanced: "Avanzado",
+  },
+  it: {
+    appTitle: "Armonix",
+    appSubtitle: "Visualizzatore di Accordi per Piano e Chitarra",
+    modeVisualizer: "Visualizzatore",
+    modeComposer: "Compositore",
+    root: "Fondamentale / Tonica",
+    quality: "Qualità",
+    extension: "Variazione",
+    aiInsight: "Informazioni Aggiuntive",
+    play: "Suona",
+    loading: "Caricamento...",
+    notation: "Notazione",
+    major: "Maggiore",
+    minor: "Minore",
+    basic: "Base",
+    noInsight: "Nessuna informazione disponibile.",
+    apiKeyError: "Chiave API non configurata.",
+    aboutTitle: "Cos'è Armonix?",
+    aboutText1: "Sono Francisco Carle, musicista e creatore di Armonix. Insegnando pianoforte, ho capito che visualizzare la costruzione degli accordi è spesso un ostacolo per gli studenti.",
+    aboutText2: "Armonix nasce per colmare questo divario. Serve come aiuto visivo interattivo per demistificare la formazione degli accordi.",
+    dedication: "Dedico questa web app a Celeste, Helena, Matteo e Gaspar, i nostri musicisti del futuro.",
+    instrument: "Strumento",
+    piano: "Pianoforte",
+    guitar: "Chitarra",
+    close: "Chiudi",
+    guitarNoVoicing: "Posizione non disponibile nei primi 5 tasti.",
+    footerText: "Armonix è un'applicazione sviluppata con la buona energia di",
+    composerTitle: "Compositore di Canzoni",
+    composerSubtitle: "Genera progressioni di accordi basate sul tuo stile.",
+    lblStyle: "Stile",
+    lblMood: "Umore",
+    lblTempo: "Tempo",
+    lblComplexity: "Complessità",
+    btnCompose: "Componi Canzone",
+    keyOf: "Tonalità",
+    composerResult: "Risultato",
+    mood_happy: "Felice",
+    mood_sad: "Triste",
+    mood_melancholic: "Malinconico",
+    mood_energetic: "Energico",
+    mood_relaxed: "Rilassato",
+    mood_epic: "Epico",
+    mood_meditation: "Meditazione",
+    mood_concentration: "Concentrazione",
+    tempo_slow: "Lento",
+    tempo_moderate: "Moderato",
+    tempo_fast: "Veloce",
+    complexity_basic: "Base",
+    complexity_intermediate: "Intermedio",
+    complexity_advanced: "Avanzato",
+  },
+  fr: {
+    appTitle: "Armonix",
+    appSubtitle: "Visualiseur d'Accords Piano & Guitare",
+    modeVisualizer: "Visualiseur",
+    modeComposer: "Compositeur",
+    root: "Fondamentale",
+    quality: "Qualité",
+    extension: "Variation",
+    aiInsight: "Informations Supplémentaires",
+    play: "Jouer",
+    loading: "Chargement...",
+    notation: "Notation",
+    major: "Majeur",
+    minor: "Mineur",
+    basic: "Basique",
+    noInsight: "Aucune information disponible.",
+    apiKeyError: "Clé API non configurée.",
+    aboutTitle: "Qu'est-ce qu'Armonix ?",
+    aboutText1: "Je suis Francisco Carle, musicien et créateur d'Armonix. En enseignant le piano, j'ai réalisé que visualiser la construction des accords est souvent un obstacle pour les étudiants.",
+    aboutText2: "Armonix est né pour combler cette lacune. Il sert d'aide visuelle interactive pour démystifier la formation des accords.",
+    dedication: "Je dédie cette application web à Celeste, Helena, Matteo et Gaspar, nos musiciens du futur.",
+    instrument: "Instrument",
+    piano: "Piano",
+    guitar: "Guitare",
+    close: "Fermer",
+    guitarNoVoicing: "Position non disponible dans les 5 premières frettes.",
+    footerText: "Armonix est une application développée avec la bonne énergie de",
+    composerTitle: "Compositeur de Chansons",
+    composerSubtitle: "Générez des progressions d'accords basées sur votre style.",
+    lblStyle: "Style",
+    lblMood: "Humeur",
+    lblTempo: "Tempo",
+    lblComplexity: "Complexité",
+    btnCompose: "Composer",
+    keyOf: "Tonalité",
+    composerResult: "Résultat",
+    mood_happy: "Joyeux",
+    mood_sad: "Triste",
+    mood_melancholic: "Mélancolique",
+    mood_energetic: "Énergique",
+    mood_relaxed: "Détendu",
+    mood_epic: "Épique",
+    mood_meditation: "Méditation",
+    mood_concentration: "Concentration",
+    tempo_slow: "Lent",
+    tempo_moderate: "Modéré",
+    tempo_fast: "Rapide",
+    complexity_basic: "Basique",
+    complexity_intermediate: "Intermédiaire",
+    complexity_advanced: "Avancé",
+  },
+  de: {
+    appTitle: "Armonix",
+    appSubtitle: "Klavier & Gitarren Akkord-Visualisierer",
+    modeVisualizer: "Visualisierer",
+    modeComposer: "Komponist",
+    root: "Grundton",
+    quality: "Qualität",
+    extension: "Variation",
+    aiInsight: "Zusätzliche Informationen",
+    play: "Abspielen",
+    loading: "Laden...",
+    notation: "Notation",
+    major: "Dur",
+    minor: "Moll",
+    basic: "Basis",
+    noInsight: "Keine Informationen verfügbar.",
+    apiKeyError: "API-Schlüssel nicht konfiguriert.",
+    aboutTitle: "Was ist Armonix?",
+    aboutText1: "Ich bin Francisco Carle, Musiker und Schöpfer von Armonix. Beim Klavierunterricht habe ich festgestellt, dass die Visualisierung von Akkorden oft ein Hindernis für Schüler darstellt.",
+    aboutText2: "Armonix wurde geschaffen, um diese Lücke zu schließen. Es dient als interaktive visuelle Hilfe, um die Akkordbildung zu entmystifizieren.",
+    dedication: "Ich widme diese Web-App Celeste, Helena, Matteo und Gaspar, unseren Musikern der Zukunft.",
+    instrument: "Instrument",
+    piano: "Klavier",
+    guitar: "Gitarre",
+    close: "Schließen",
+    guitarNoVoicing: "Keine Griffweise in den ersten 5 Bünden verfügbar.",
+    footerText: "Armonix ist eine Anwendung, die mit der guten Energie von",
+    composerTitle: "Song-Komponist",
+    composerSubtitle: "Generiere Akkordfolgen basierend auf deinem Stil.",
+    lblStyle: "Stil",
+    lblMood: "Stimmung",
+    lblTempo: "Tempo",
+    lblComplexity: "Komplexität",
+    btnCompose: "Komponieren",
+    keyOf: "Tonart",
+    composerResult: "Ergebnis",
+    mood_happy: "Glücklich",
+    mood_sad: "Traurig",
+    mood_melancholic: "Melancholisch",
+    mood_energetic: "Energetisch",
+    mood_relaxed: "Entspannt",
+    mood_epic: "Episch",
+    mood_meditation: "Meditation",
+    mood_concentration: "Konzentration",
+    tempo_slow: "Langsam",
+    tempo_moderate: "Mittel",
+    tempo_fast: "Schnell",
+    complexity_basic: "Basis",
+    complexity_intermediate: "Mittel",
+    complexity_advanced: "Fortgeschritten",
+  },
+  zh: {
+    appTitle: "Armonix",
+    appSubtitle: "钢琴和吉他和弦可视化工具",
+    modeVisualizer: "可视化工具",
+    modeComposer: "歌曲创作者",
+    root: "根音",
+    quality: "性质",
+    extension: "变奏",
+    aiInsight: "附加信息",
+    play: "播放",
+    loading: "加载中...",
+    notation: "记谱法",
+    major: "大调",
+    minor: "小调",
+    basic: "基础",
+    noInsight: "无可用信息。",
+    apiKeyError: "未配置API密钥。",
+    aboutTitle: "什么是 Armonix？",
+    aboutText1: "我是 Francisco Carle，音乐家和 Armonix 的创造者。在教授流行钢琴时，我意识到在键盘上可视化和弦结构通常是学生的一大障碍。",
+    aboutText2: "Armonix 的诞生就是为了弥补这一差距。它作为一个交互式的视觉辅助工具，旨在揭开和弦构成的神秘面纱。",
+    dedication: "我将这个网络应用程序献给 Celeste, Helena, Matteo 和 Gaspar，我们未来的音乐家。",
+    instrument: "乐器",
+    piano: "钢琴",
+    guitar: "吉他",
+    close: "关闭",
+    guitarNoVoicing: "前5品无可用指法。",
+    footerText: "Armonix 是由以下良好能量开发的应用程序：",
+    composerTitle: "歌曲创作者",
+    composerSubtitle: "根据您的风格生成和弦进行。",
+    lblStyle: "风格",
+    lblMood: "情绪",
+    lblTempo: "速度",
+    lblComplexity: "复杂度",
+    btnCompose: "创作歌曲",
+    keyOf: "调性",
+    composerResult: "结果",
+    mood_happy: "快乐",
+    mood_sad: "悲伤",
+    mood_melancholic: "忧郁",
+    mood_energetic: "充满活力",
+    mood_relaxed: "放松",
+    mood_epic: "史诗",
+    mood_meditation: "冥想",
+    mood_concentration: "专注",
+    tempo_slow: "慢",
+    tempo_moderate: "中",
+    tempo_fast: "快",
+    complexity_basic: "基础",
+    complexity_intermediate: "中级",
+    complexity_advanced: "高级",
+  },
+  ja: {
+    appTitle: "Armonix",
+    appSubtitle: "ピアノ＆ギターコードビジュアライザー",
+    modeVisualizer: "ビジュアライザー",
+    modeComposer: "作曲ツール",
+    root: "ルート音",
+    quality: "クオリティ",
+    extension: "バリエーション",
+    aiInsight: "追加情報",
+    play: "再生",
+    loading: "読み込み中...",
+    notation: "表記",
+    major: "メジャー",
+    minor: "マイナー",
+    basic: "基本",
+    noInsight: "情報がありません。",
+    apiKeyError: "APIキーが設定されていません。",
+    aboutTitle: "Armonixとは？",
+    aboutText1: "私はArmonixの開発者で音楽家のFrancisco Carleです。ポピュラー音楽のピアノを教える中で、鍵盤上でのコードの仕組みを視覚化することが生徒にとって大きな壁になっていることに気づきました。",
+    aboutText2: "Armonixはそのギャップを埋めるために生まれました。コード形成を分かりやすくするためのインタラクティブな視覚補助ツールです。",
+    dedication: "このウェブアプリを、未来の音楽家であるCeleste、Helena、Matteo、Gasparに捧げます。",
+    instrument: "楽器",
+    piano: "ピアノ",
+    guitar: "ギター",
+    close: "閉じる",
+    guitarNoVoicing: "最初の5フレットで利用可能なボイシングがありません。",
+    footerText: "Armonixは、以下の良いエネルギーで開発されたアプリケーションです：",
+    composerTitle: "ソングコンポーザー",
+    composerSubtitle: "あなたのスタイルに基づいてコード進行を生成します。",
+    lblStyle: "スタイル",
+    lblMood: "ムード",
+    lblTempo: "テンポ",
+    lblComplexity: "複雑さ",
+    btnCompose: "作曲する",
+    keyOf: "キー",
+    composerResult: "結果",
+    mood_happy: "幸せ",
+    mood_sad: "悲しい",
+    mood_melancholic: "メランコリック",
+    mood_energetic: "エネルギッシュ",
+    mood_relaxed: "リラックス",
+    mood_epic: "壮大",
+    mood_meditation: "瞑想",
+    mood_concentration: "集中",
+    tempo_slow: "遅い",
+    tempo_moderate: "普通",
+    tempo_fast: "速い",
+    complexity_basic: "基本",
+    complexity_intermediate: "中級",
+    complexity_advanced: "上級",
+  },
+  ko: {
+    appTitle: "Armonix",
+    appSubtitle: "피아노 및 기타 코드 시각화 도구",
+    modeVisualizer: "시각화 도구",
+    modeComposer: "작곡 도구",
+    root: "근음",
+    quality: "코드 성질",
+    extension: "변형",
+    aiInsight: "추가 정보",
+    play: "재생",
+    loading: "로딩 중...",
+    notation: "표기법",
+    major: "메이저",
+    minor: "마이너",
+    basic: "기본",
+    noInsight: "정보 없음.",
+    apiKeyError: "API 키가 설정되지 않았습니다.",
+    aboutTitle: "Armonix란 무엇인가요?",
+    aboutText1: "저는 음악가이자 Armonix의 창작자인 Francisco Carle입니다. 피아노를 가르치면서 학생들이 건반 위에서 코드가 어떻게 구성되는지 시각화하는 데 어려움을 겪는 것을 보았습니다.",
+    aboutText2: "Armonix는 그 간극을 메우기 위해 탄생했습니다. 코드 형성을 쉽게 이해할 수 있도록 돕는 대화형 시각 보조 도구입니다.",
+    dedication: "이 웹 앱을 미래의 음악가인 Celeste, Helena, Matteo, Gaspar에게 바칩니다.",
+    instrument: "악기",
+    piano: "피아노",
+    guitar: "기타",
+    close: "닫기",
+    guitarNoVoicing: "처음 5프렛 내에서 가능한 보이싱이 없습니다.",
+    footerText: "Armonix는 다음의 좋은 에너지로 개발된 애플리케이션입니다:",
+    composerTitle: "노래 작곡",
+    composerSubtitle: "스타일에 따라 코드 진행을 생성하세요.",
+    lblStyle: "스타일",
+    lblMood: "분위기",
+    lblTempo: "템포",
+    lblComplexity: "복잡도",
+    btnCompose: "작곡하기",
+    keyOf: "조성",
+    composerResult: "결과",
+    mood_happy: "행복함",
+    mood_sad: "슬픔",
+    mood_melancholic: "우울함",
+    mood_energetic: "활기참",
+    mood_relaxed: "편안함",
+    mood_epic: "웅장함",
+    mood_meditation: "명상",
+    mood_concentration: "집중",
+    tempo_slow: "느림",
+    tempo_moderate: "보통",
+    tempo_fast: "빠름",
+    complexity_basic: "기본",
+    complexity_intermediate: "중급",
+    complexity_advanced: "고급",
   }
 };
 
+export const COMPOSER_OPTIONS = {
+  styles: [
+    'pop', 'rock', 'ballad', 'jazz', 'reggae', 'lofi', 
+    'country', 'techno', 'electropop', 'alternative', 'heavy-metal', 'blues', 'k-pop', 'ost'
+  ],
+  moods: ['happy', 'sad', 'melancholic', 'energetic', 'relaxed', 'epic', 'meditation', 'concentration'],
+  tempos: ['slow', 'moderate', 'fast'],
+  complexities: ['basic', 'intermediate', 'advanced']
+};
+
 // Guitar Voicings (Standard Open Positions & Basic Variations for 5 frets)
-// Format: [LowE, A, D, G, B, HighE] (-1=mute, 0=open, N=fret)
-// This is a simplified lookup. Ideally, this would be algorithmic, but for "Standard Pop Chords" a dictionary is reliable.
 type VoicingMap = Record<string, Record<string, Record<string, GuitarVoicing>>>;
 
 export const GUITAR_VOICINGS: VoicingMap = {
@@ -122,18 +515,18 @@ export const GUITAR_VOICINGS: VoicingMap = {
       'none': [-1, 3, 2, 0, 1, 0],
       '7':    [-1, 3, 2, 3, 1, 0],
       'maj7': [-1, 3, 2, 0, 0, 0],
-      '9':    [-1, 3, 2, 0, 3, 0], // Cadd9ish
-      'sus2': [-1, 3, 0, 0, 1, 0], // Csus2 difficult in open, usually x30033. Lets try [-1, 3, 0, 0, 3, 3]
-      'sus4': [-1, 3, 3, 0, 1, 1], // Barre-ish F shape moved
+      '9':    [-1, 3, 2, 0, 3, 0],
+      'sus2': [-1, 3, 0, 0, 1, 0],
+      'sus4': [-1, 3, 3, 0, 1, 1],
       '6':    [-1, 3, 2, 2, 1, 0],
-      'dim':  [-1, 3, 4, 2, 4, -1], // Hard
+      'dim':  [-1, 3, 4, 2, 4, -1],
       'aug':  [-1, 3, 2, 1, 1, 0],
     },
     'minor': {
-      'none': [-1, 3, 5, 5, 4, 3], // Barre C min (Fret 3). Technically fits first 5 frets.
+      'none': [-1, 3, 5, 5, 4, 3],
       '7':    [-1, 3, 5, 3, 4, 3],
       'maj7': [-1, 3, 5, 4, 4, 3],
-      '9':    [-1, 3, 1, 3, 3, -1], // Cm9 hard
+      '9':    [-1, 3, 1, 3, 3, -1],
       'sus2': [-1, 3, 5, 5, 3, 3],
       'sus4': [-1, 3, 5, 5, 6, 3],
       '6':    [-1, 3, 1, 2, 1, -1],
@@ -147,7 +540,7 @@ export const GUITAR_VOICINGS: VoicingMap = {
       'none': [-1, -1, 0, 2, 3, 2],
       '7':    [-1, -1, 0, 2, 1, 2],
       'maj7': [-1, -1, 0, 2, 2, 2],
-      '9':    [-1, -1, 0, 2, 1, 0], // D9? No D7 is x02120. D9 usually x5455x. 
+      '9':    [-1, -1, 0, 2, 1, 0],
       'sus2': [-1, -1, 0, 2, 3, 0],
       'sus4': [-1, -1, 0, 2, 3, 3],
       '6':    [-1, -1, 0, 2, 0, 2],
@@ -158,22 +551,22 @@ export const GUITAR_VOICINGS: VoicingMap = {
       'none': [-1, -1, 0, 2, 3, 1],
       '7':    [-1, -1, 0, 2, 1, 1],
       'maj7': [-1, -1, 0, 2, 2, 1],
-      '9':    [-1, -1, 0, 2, 1, 0], // Dm9 often misses root in open
+      '9':    [-1, -1, 0, 2, 1, 0],
       'sus2': [-1, -1, 0, 2, 3, 0],
       'sus4': [-1, -1, 0, 2, 3, 3],
       '6':    [-1, -1, 0, 2, 0, 1],
       'dim':  [-1, -1, 0, 1, 3, 1],
-      'aug':  [-1, -1, 0, 3, 3, 1], // Hard
+      'aug':  [-1, -1, 0, 3, 3, 1],
     }
   },
   // E Roots
   'E': {
     'major': {
       'none': [0, 2, 2, 1, 0, 0],
-      '7':    [0, 2, 0, 1, 0, 0], // or 022130
+      '7':    [0, 2, 0, 1, 0, 0],
       'maj7': [0, 2, 1, 1, 0, 0],
       '9':    [0, 2, 0, 1, 0, 2],
-      'sus2': [0, 2, 4, 4, 0, 0], // Esus2 
+      'sus2': [0, 2, 4, 4, 0, 0],
       'sus4': [0, 2, 2, 2, 0, 0],
       '6':    [0, 2, 2, 1, 2, 0],
       'dim':  [0, 1, 2, 0, 2, 0],
@@ -187,21 +580,21 @@ export const GUITAR_VOICINGS: VoicingMap = {
       'sus2': [0, 2, 4, 0, 0, 0],
       'sus4': [0, 2, 2, 2, 0, 0],
       '6':    [0, 2, 2, 0, 2, 0],
-      'dim':  [0, 1, 2, 0, 2, 0], // Edim7ish
-      'aug':  [0, 2, 2, 0, 1, 0], // Em(aug)?
+      'dim':  [0, 1, 2, 0, 2, 0],
+      'aug':  [0, 2, 2, 0, 1, 0],
     }
   },
-  // F Roots (Barre 1st fret usually)
+  // F Roots
   'F': {
     'major': {
       'none': [1, 3, 3, 2, 1, 1],
       '7':    [1, 3, 1, 2, 1, 1],
-      'maj7': [-1, 3, 3, 2, 1, 0], // Easy Fmaj7
+      'maj7': [-1, 3, 3, 2, 1, 0],
       '9':    [1, 3, 1, 2, 1, 3],
       'sus2': [-1, 3, 3, 0, 1, 1],
       'sus4': [1, 3, 3, 3, 1, 1],
       '6':    [1, 3, 3, 2, 3, 1],
-      'dim':  [-1, -1, 0, 1, 0, 1], // Fdim tri
+      'dim':  [-1, -1, 0, 1, 0, 1],
       'aug':  [-1, 0, 3, 2, 2, 1],
     },
     'minor': {
@@ -209,7 +602,7 @@ export const GUITAR_VOICINGS: VoicingMap = {
       '7':    [1, 3, 1, 1, 1, 1],
       'maj7': [1, 3, 2, 1, 1, 1],
       '9':    [1, 3, 1, 1, 1, 3],
-      'sus2': [1, 3, 3, 0, 1, 1], // Fsus2
+      'sus2': [1, 3, 3, 0, 1, 1],
       'sus4': [1, 3, 3, 3, 1, 1],
       '6':    [1, 3, 3, 1, 3, 1],
       'dim':  [1, 2, 3, 1, 3, 1],
@@ -222,15 +615,15 @@ export const GUITAR_VOICINGS: VoicingMap = {
       'none': [3, 2, 0, 0, 0, 3],
       '7':    [3, 2, 0, 0, 0, 1],
       'maj7': [3, 2, 0, 0, 0, 2],
-      '9':    [3, 2, 0, 2, 0, 3], // Gadd9
+      '9':    [3, 2, 0, 2, 0, 3],
       'sus2': [3, 0, 0, 0, 3, 3],
-      'sus4': [3, 3, 0, 0, 1, 3], // Hard to play
+      'sus4': [3, 3, 0, 0, 1, 3],
       '6':    [3, 2, 0, 0, 0, 0],
-      'dim':  [3, 4, 5, 3, 5, 3], // Gdim7
+      'dim':  [3, 4, 5, 3, 5, 3],
       'aug':  [3, 2, 1, 0, 0, 3],
     },
     'minor': {
-      'none': [3, 5, 5, 3, 3, 3], // G min barre
+      'none': [3, 5, 5, 3, 3, 3],
       '7':    [3, 5, 3, 3, 3, 3],
       'maj7': [3, 5, 4, 3, 3, 3],
       '9':    [3, 5, 3, 3, 3, 5],
@@ -251,7 +644,7 @@ export const GUITAR_VOICINGS: VoicingMap = {
       'sus2': [-1, 0, 2, 2, 0, 0],
       'sus4': [-1, 0, 2, 2, 3, 0],
       '6':    [-1, 0, 2, 2, 2, 2],
-      'dim':  [-1, 0, 1, 2, 1, 2], // Adim7
+      'dim':  [-1, 0, 1, 2, 1, 2],
       'aug':  [-1, 0, 3, 2, 2, 1],
     },
     'minor': {
@@ -263,14 +656,14 @@ export const GUITAR_VOICINGS: VoicingMap = {
       'sus4': [-1, 0, 2, 2, 3, 0],
       '6':    [-1, 0, 2, 2, 1, 2],
       'dim':  [-1, 0, 1, 2, 1, 0],
-      'aug':  [-1, 0, 2, 2, 1, 1], // Am(aug)?
+      'aug':  [-1, 0, 2, 2, 1, 1],
     }
   },
   // B Roots
   'B': {
     'major': {
-      'none': [-1, 2, 4, 4, 4, 2], // B barre
-      '7':    [-1, 2, 1, 2, 0, 2], // B7 open
+      'none': [-1, 2, 4, 4, 4, 2],
+      '7':    [-1, 2, 1, 2, 0, 2],
       'maj7': [-1, 2, 4, 3, 4, 2],
       '9':    [-1, 2, 1, 2, 2, 2],
       'sus2': [-1, 2, 4, 4, 2, 2],
@@ -280,8 +673,8 @@ export const GUITAR_VOICINGS: VoicingMap = {
       'aug':  [-1, 2, 1, 0, 0, 3],
     },
     'minor': {
-      'none': [-1, 2, 4, 4, 3, 2], // Bm barre
-      '7':    [-1, 2, 0, 2, 0, 2], // Bm7 open variation
+      'none': [-1, 2, 4, 4, 3, 2],
+      '7':    [-1, 2, 0, 2, 0, 2],
       'maj7': [-1, 2, 4, 3, 3, 2],
       '9':    [-1, 2, 0, 2, 2, 2],
       'sus2': [-1, 2, 4, 4, 2, 2],
@@ -292,30 +685,22 @@ export const GUITAR_VOICINGS: VoicingMap = {
     }
   }
 };
-// Note: Flats/Sharps (Bb, Eb, etc) can be added similarly. 
-// For brevity in this "World Class" demo, I'm including the most critical naturals and F (major key).
-// If the user selects C#, logic will handle fallback or we add it.
-// Let's add Bb as it's very common.
 GUITAR_VOICINGS['A#'] = {
    'major': { 'none': [-1, 1, 3, 3, 3, 1], '7': [-1, 1, 3, 1, 3, 1], 'maj7': [-1, 1, 3, 2, 3, 1] },
    'minor': { 'none': [-1, 1, 3, 3, 2, 1], '7': [-1, 1, 3, 1, 2, 1], 'maj7': [-1, 1, 3, 2, 2, 1] }
 };
-// Add C#
 GUITAR_VOICINGS['C#'] = {
    'major': { 'none': [-1, 4, 6, 6, 6, 4], '7': [-1, 4, 6, 4, 6, 4], 'maj7': [-1, 4, 6, 5, 6, 4] },
    'minor': { 'none': [-1, 4, 6, 6, 5, 4], '7': [-1, 4, 6, 4, 5, 4], 'maj7': [-1, 4, 6, 5, 5, 4] }
 };
-// Add Eb (D#)
 GUITAR_VOICINGS['D#'] = {
-   'major': { 'none': [-1, 6, 8, 8, 8, 6], '7': [-1, 6, 8, 6, 8, 6] }, // Fits if we stretch 5 frets definition slightly or map to X X 1 3 4 3
+   'major': { 'none': [-1, 6, 8, 8, 8, 6], '7': [-1, 6, 8, 6, 8, 6] },
    'minor': { 'none': [-1, 6, 8, 8, 7, 6] }
 };
-// Add F#
 GUITAR_VOICINGS['F#'] = {
    'major': { 'none': [2, 4, 4, 3, 2, 2], '7': [2, 4, 2, 3, 2, 2] },
    'minor': { 'none': [2, 4, 4, 2, 2, 2], '7': [2, 4, 2, 2, 2, 2] }
 };
-// Add G#
 GUITAR_VOICINGS['G#'] = {
    'major': { 'none': [4, 6, 6, 5, 4, 4], '7': [4, 6, 4, 5, 4, 4] },
    'minor': { 'none': [4, 6, 6, 4, 4, 4], '7': [4, 6, 4, 4, 4, 4] }

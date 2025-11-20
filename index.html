@@ -3,9 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ChordHarmony AI</title>
+    <title>Armonix</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          }
+        }
+      }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Favicon: Purple rounded square with music note -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%234f46e5'/%3E%3Cpath d='M363 128v202c0 38-24 58-54 58-26 0-46-18-46-43 0-22 18-41 42-44V174L192 201v173c0 38-24 58-54 58-26 0-46-18-46-43 0-22 18-41 42-44V128l229-45z' fill='white'/%3E%3C/svg%3E" type="image/svg+xml" />
     <style>
       body {
         font-family: 'Inter', sans-serif;
@@ -16,11 +30,14 @@
         height: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #f1f5f9;
+        background: transparent;
       }
       ::-webkit-scrollbar-thumb {
         background: #cbd5e1;
         border-radius: 4px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background: #475569;
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #94a3b8;
@@ -38,7 +55,7 @@
 }
 </script>
 </head>
-  <body class="bg-slate-50 text-slate-800 antialiased">
+  <body class="bg-slate-50 text-slate-800 antialiased dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
     <div id="root"></div>
   </body>
 </html>

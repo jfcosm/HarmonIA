@@ -45,22 +45,22 @@ const Piano: React.FC<PianoProps> = ({ activeMidiNotes, rootMidi, notation }) =>
     return (
       // Removed overflow-x-auto to prevent scrolling, allowing flex to fit width
       <div className="relative select-none flex justify-center w-full">
-        <div className="relative flex w-full max-w-5xl h-40 md:h-56 lg:h-64 bg-slate-800 p-1 rounded-xl shadow-2xl border-t-4 border-slate-700">
+        <div className="relative flex w-full max-w-5xl h-40 md:h-56 lg:h-64 bg-slate-800 dark:bg-slate-900 p-1 rounded-xl shadow-2xl border-t-4 border-slate-700 dark:border-slate-800 transition-colors">
           {whiteKeys.map((key) => (
             <div
               key={key.midi}
               className={`
                 relative flex-1 h-full rounded-b-md mx-[1px] z-0
                 flex items-end justify-center pb-2 md:pb-4 transition-all duration-300
-                border border-slate-300
+                border border-slate-300 dark:border-slate-600
                 ${key.isActive 
                   ? (key.isRoot ? 'bg-indigo-300 shadow-[inset_0_-10px_20px_rgba(79,70,229,0.3)]' : 'bg-indigo-200') 
-                  : 'bg-white hover:bg-slate-50'}
+                  : 'bg-white dark:bg-slate-300 hover:bg-slate-50 dark:hover:bg-slate-200'}
               `}
             >
                {/* Note Label */}
                {(key.isActive || key.noteIndex === 0) && (
-                 <span className={`text-[10px] md:text-xs font-bold ${key.isActive ? 'text-indigo-900' : 'text-slate-400'}`}>
+                 <span className={`text-[10px] md:text-xs font-bold ${key.isActive ? 'text-indigo-900' : 'text-slate-400 dark:text-slate-600'}`}>
                    {key.name}
                  </span>
                )}

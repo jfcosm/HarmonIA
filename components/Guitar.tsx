@@ -14,8 +14,8 @@ const Guitar: React.FC<GuitarProps> = ({ voicing, language }) => {
   
   if (!voicing) {
     return (
-      <div className="h-64 flex items-center justify-center bg-slate-100 rounded-2xl border border-dashed border-slate-300">
-        <p className="text-slate-400 font-medium text-center px-4">
+      <div className="h-64 flex items-center justify-center bg-slate-100 dark:bg-slate-800 rounded-2xl border border-dashed border-slate-300 dark:border-slate-600 transition-colors">
+        <p className="text-slate-400 dark:text-slate-500 font-medium text-center px-4">
           {TRANSLATIONS[language].guitarNoVoicing}
         </p>
       </div>
@@ -30,7 +30,7 @@ const Guitar: React.FC<GuitarProps> = ({ voicing, language }) => {
     <div className="relative flex flex-col items-center py-4 select-none">
       
       {/* Nut & Fretboard Container */}
-      <div className="relative bg-slate-800 shadow-2xl rounded-b-lg overflow-hidden" style={{ width: '280px', height: '320px' }}>
+      <div className="relative bg-slate-800 dark:bg-slate-900 shadow-2xl rounded-b-lg overflow-hidden transition-colors" style={{ width: '280px', height: '320px' }}>
         
         {/* Nut (Top Bar) */}
         <div className="absolute top-0 w-full h-2 bg-orange-100 border-b-2 border-slate-400 z-20"></div>
