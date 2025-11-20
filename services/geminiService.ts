@@ -7,19 +7,33 @@ const getGenAI = () => {
   if (genAI) return genAI;
 
   try {
-    // VITE PRODUCTION BUILD:
-    // Use import.meta.env.VITE_API_KEY for Vite based apps.
-    // We fallback to process.env for compatibility with other environments.
-    // @ts-ignore - import.meta may not be recognized by all TS configs without explicit setup, but works in Vite
-    const apiKey = import.meta.env.VITE_API_KEY || (typeof process !== 'undefined' && process.env ? process.env.API_KEY : undefined);
+    let apiKey: string | undefined;
+
+    // VITE PRODUCTION FIX:
+    // We must safely check if import.meta.env exists to avoid runtime crashes.
+    // In some environments, accessing properties of undefined throws an error.
+    try {
+      // @ts-ignore - import.meta checks needed for mixed environments
+      if (typeof import.meta !== 'undefined' && import.meta.env) {
+        // @ts-ignore
+        apiKey = import.meta.env.VITE_API_KEY;
+      }
+    } catch (err) {
+      // Fallback silently if import.meta fails
+    }
+
+    // Fallback to process.env for non-Vite environments
+    if (!apiKey && typeof process !== 'undefined' && process.env) {
+      apiKey = process.env.API_KEY;
+    }
 
     if (apiKey) {
       genAI = new GoogleGenAI({ apiKey: apiKey });
     } else {
-      console.warn("Armonix: No API Key found in environment variables.");
+      console.warn("Armonix: No API Key found in VITE_API_KEY or process.env.");
     }
   } catch (e) {
-    console.error("Armonix: Environment variable access error", e);
+    console.error("Armonix: Environment variable initialization error", e);
   }
   
   return genAI;
