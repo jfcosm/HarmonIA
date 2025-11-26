@@ -1,4 +1,5 @@
 
+
 import { NoteDefinition, ChordExtensionType, Language, GuitarVoicing } from './types';
 
 export const NOTES: NoteDefinition[] = [
@@ -92,6 +93,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     modeComposer: "Song Composer",
     modeDetector: "Chord Detector",
     modeGroovebox: "Groovebox",
+    modeTuner: "Tuner",
     root: "Fundamental / Root",
     quality: "Quality",
     extension: "Variation",
@@ -159,6 +161,12 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "Randomize",
     groovePitch: "Pitch",
     grooveInstruction: "Select a step above • Press key to assign pitch",
+    // Tuner
+    tunerTitle: "Instrument Tuner",
+    tunerSubtitle: "Use your microphone to tune your instrument.",
+    micError: "Microphone access denied or not available.",
+    startTuner: "Start Tuner",
+    stopTuner: "Stop Tuner",
   },
   es: {
     appTitle: "Armonix",
@@ -167,6 +175,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     modeComposer: "Compositor",
     modeDetector: "Detector",
     modeGroovebox: "Groovebox",
+    modeTuner: "Afinador",
     root: "Nota Fundamental",
     quality: "Cualidad",
     extension: "Variación / Tensión",
@@ -234,6 +243,12 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "Aleatorio",
     groovePitch: "Tono",
     grooveInstruction: "Selecciona un paso arriba • Presiona tecla para asignar tono",
+    // Tuner
+    tunerTitle: "Afinador de Instrumentos",
+    tunerSubtitle: "Usa tu micrófono para afinar tu instrumento.",
+    micError: "Acceso al micrófono denegado o no disponible.",
+    startTuner: "Iniciar Afinador",
+    stopTuner: "Detener Afinador",
   },
   it: {
     appTitle: "Armonix",
@@ -242,6 +257,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     modeComposer: "Compositore",
     modeDetector: "Rilevatore",
     modeGroovebox: "Groovebox",
+    modeTuner: "Accordatore",
     root: "Fondamentale / Tonica",
     quality: "Qualità",
     extension: "Variazione",
@@ -309,6 +325,12 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "Casuale",
     groovePitch: "Tono",
     grooveInstruction: "Seleziona un passo sopra • Premi un tasto per assegnare il tono",
+    // Tuner
+    tunerTitle: "Accordatore Strumenti",
+    tunerSubtitle: "Usa il microfono per accordare il tuo strumento.",
+    micError: "Accesso al microfono negato o non disponibile.",
+    startTuner: "Avvia Accordatore",
+    stopTuner: "Ferma Accordatore",
   },
   fr: {
     appTitle: "Armonix",
@@ -317,6 +339,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     modeComposer: "Compositeur",
     modeDetector: "Détecteur",
     modeGroovebox: "Groovebox",
+    modeTuner: "Accordeur",
     root: "Fondamentale",
     quality: "Qualité",
     extension: "Variation",
@@ -384,6 +407,12 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "Aléatoire",
     groovePitch: "Hauteur",
     grooveInstruction: "Sélectionnez une étape ci-dessus • Appuyez sur une touche",
+    // Tuner
+    tunerTitle: "Accordeur d'Instruments",
+    tunerSubtitle: "Utilisez votre microphone pour accorder votre instrument.",
+    micError: "Accès au microphone refusé ou non disponible.",
+    startTuner: "Démarrer l'Accordeur",
+    stopTuner: "Arrêter l'Accordeur",
   },
   de: {
     appTitle: "Armonix",
@@ -392,6 +421,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     modeComposer: "Komponist",
     modeDetector: "Detektor",
     modeGroovebox: "Groovebox",
+    modeTuner: "Stimmgerät",
     root: "Grundton",
     quality: "Qualität",
     extension: "Variation",
@@ -459,6 +489,12 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "Zufällig",
     groovePitch: "Tonhöhe",
     grooveInstruction: "Wähle oben einen Schritt • Drücke Taste für Tonhöhe",
+    // Tuner
+    tunerTitle: "Instrumentenstimmgerät",
+    tunerSubtitle: "Verwende dein Mikrofon, um dein Instrument zu stimmen.",
+    micError: "Mikrofonzugriff verweigert oder nicht verfügbar.",
+    startTuner: "Stimmgerät starten",
+    stopTuner: "Stimmgerät stoppen",
   },
   zh: {
     appTitle: "Armonix",
@@ -467,6 +503,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     modeComposer: "歌曲创作者",
     modeDetector: "和弦识别器",
     modeGroovebox: "Groovebox",
+    modeTuner: "调音器",
     root: "根音",
     quality: "性质",
     extension: "变奏",
@@ -534,6 +571,12 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "随机",
     groovePitch: "音高",
     grooveInstruction: "选择上方的一个步骤 • 按键分配音高",
+    // Tuner
+    tunerTitle: "乐器调音器",
+    tunerSubtitle: "使用麦克风为您的乐器调音。",
+    micError: "麦克风访问被拒绝或不可用。",
+    startTuner: "启动调音器",
+    stopTuner: "停止调音器",
   },
   ja: {
     appTitle: "Armonix",
@@ -542,6 +585,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     modeComposer: "作曲ツール",
     modeDetector: "コード検出",
     modeGroovebox: "グルーヴボックス",
+    modeTuner: "チューナー",
     root: "ルート音",
     quality: "クオリティ",
     extension: "バリエーション",
@@ -609,6 +653,12 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "ランダム",
     groovePitch: "ピッチ",
     grooveInstruction: "上のステップを選択 • キーを押してピッチを割り当て",
+    // Tuner
+    tunerTitle: "楽器チューナー",
+    tunerSubtitle: "マイクを使って楽器をチューニングします。",
+    micError: "マイクへのアクセスが拒否されたか、利用できません。",
+    startTuner: "チューナーを開始",
+    stopTuner: "チューナーを停止",
   },
   ko: {
     appTitle: "Armonix",
@@ -617,6 +667,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     modeComposer: "작곡 도구",
     modeDetector: "코드 감지기",
     modeGroovebox: "그루브박스",
+    modeTuner: "튜너",
     root: "근음",
     quality: "코드 성질",
     extension: "변형",
@@ -684,6 +735,12 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "무작위",
     groovePitch: "피치",
     grooveInstruction: "위의 단계를 선택하세요 • 키를 눌러 피치 할당",
+    // Tuner
+    tunerTitle: "악기 튜너",
+    tunerSubtitle: "마이크를 사용하여 악기를 조율하세요.",
+    micError: "마이크 액세스가 거부되었거나 사용할 수 없습니다.",
+    startTuner: "튜너 시작",
+    stopTuner: "튜너 중지",
   }
 };
 
