@@ -1,7 +1,8 @@
+
 {
   "name": "armonix",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.4.4",
   "type": "module",
   "scripts": {
     "dev": "vite",

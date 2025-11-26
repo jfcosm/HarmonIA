@@ -8,7 +8,7 @@ export type Language = 'en' | 'es' | 'it' | 'fr' | 'de' | 'zh' | 'ja' | 'ko';
 
 export type Instrument = 'piano' | 'guitar';
 
-export type AppMode = 'visualizer' | 'composer';
+export type AppMode = 'visualizer' | 'composer' | 'detector' | 'groovebox';
 
 export interface NoteDefinition {
   name: string; // "C", "C#"

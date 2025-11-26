@@ -1,15 +1,18 @@
+
 import { useState, useEffect, useMemo } from 'react';
 import Piano from './components/Piano';
 import Guitar from './components/Guitar';
 import Controls from './components/Controls';
 import AboutModal from './components/AboutModal';
 import Composer from './components/Composer';
+import ChordDetector from './components/ChordDetector';
+import Groovebox from './components/Groovebox';
 import { NOTES, EXTENSIONS, TRANSLATIONS } from './constants';
 import { NoteNotation, ChordExtensionType, Language, Instrument, AppMode } from './types';
 import { getChordMidiNumbers, playChordSound } from './utils/musicLogic';
 import { getGuitarVoicing } from './utils/guitarLogic';
 import { fetchChordInsight } from './services/geminiService';
-import { Music, Volume2, Sparkles, Globe, HelpCircle, PenTool, Eye, Sun, Moon } from 'lucide-react';
+import { Music, Volume2, Sparkles, Globe, HelpCircle, PenTool, Eye, Sun, Moon, Search, Disc } from 'lucide-react';
 
 // Helper to construct chord name with explicit spacing
 const getChordName = (rootIndex: number, quality: string, extension: ChordExtensionType, notation: NoteNotation) => {
@@ -70,7 +73,7 @@ function App() {
 
   // Effects
   useEffect(() => {
-    console.log("Armonix 1.1.7 initialized");
+    console.log("Armonix 1.4.0 initialized");
     // Apply dark mode class to HTML element
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -166,25 +169,39 @@ function App() {
         
         {/* Mode Selector Tabs */}
         <div className="flex justify-center mb-4">
-           <div className="bg-slate-200 dark:bg-slate-800 p-1 rounded-xl flex gap-1 transition-colors">
+           <div className="bg-slate-200 dark:bg-slate-800 p-1 rounded-xl flex gap-1 transition-colors overflow-x-auto">
               <button 
                 onClick={() => setMode('visualizer')}
-                className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all ${mode === 'visualizer' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
+                className={`flex items-center gap-2 px-3 md:px-5 py-2 rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${mode === 'visualizer' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
               >
                 <Eye size={16} />
                 <span className="hidden sm:inline">{t.modeVisualizer}</span>
               </button>
               <button 
                 onClick={() => setMode('composer')}
-                className={`flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-bold transition-all ${mode === 'composer' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
+                className={`flex items-center gap-2 px-3 md:px-5 py-2 rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${mode === 'composer' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
               >
                 <PenTool size={16} />
                 <span className="hidden sm:inline">{t.modeComposer}</span>
               </button>
+              <button 
+                onClick={() => setMode('detector')}
+                className={`flex items-center gap-2 px-3 md:px-5 py-2 rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${mode === 'detector' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
+              >
+                <Search size={16} />
+                <span className="hidden sm:inline">{t.modeDetector}</span>
+              </button>
+              <button 
+                onClick={() => setMode('groovebox')}
+                className={`flex items-center gap-2 px-3 md:px-5 py-2 rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${mode === 'groovebox' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
+              >
+                <Disc size={16} />
+                <span className="hidden sm:inline">{t.modeGroovebox}</span>
+              </button>
            </div>
         </div>
 
-        {mode === 'visualizer' ? (
+        {mode === 'visualizer' && (
           <>
             {/* VISUALIZER MODE */}
             <section className="text-center space-y-4">
@@ -262,7 +279,9 @@ function App() {
               </section>
             )}
           </>
-        ) : (
+        )}
+
+        {mode === 'composer' && (
           /* COMPOSER MODE */
           <section className="pb-8">
              <Composer 
@@ -273,6 +292,24 @@ function App() {
                language={language}
                notation={notation}
              />
+          </section>
+        )}
+
+        {mode === 'detector' && (
+          /* DETECTOR MODE */
+          <section className="pb-8">
+             <ChordDetector
+               language={language}
+               notation={notation}
+               onNotationChange={setNotation}
+             />
+          </section>
+        )}
+
+        {mode === 'groovebox' && (
+          /* GROOVEBOX MODE */
+          <section className="pb-8 w-full">
+             <Groovebox language={language} />
           </section>
         )}
       </main>

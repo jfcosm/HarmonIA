@@ -1,3 +1,4 @@
+
 import React, { useMemo } from 'react';
 import { NOTES } from '../constants';
 import { NoteNotation } from '../types';
@@ -6,12 +7,13 @@ interface PianoProps {
   activeMidiNotes: number[];
   rootMidi?: number;
   notation: NoteNotation;
+  onKeyClick?: (midi: number) => void;
 }
 
 const START_OCTAVE = 3; // Start at C3
 const NUM_OCTAVES = 3;  // Show 3 octaves
 
-const Piano: React.FC<PianoProps> = ({ activeMidiNotes, rootMidi, notation }) => {
+const Piano: React.FC<PianoProps> = ({ activeMidiNotes, rootMidi, notation, onKeyClick }) => {
   
   // Generate all keys for the keyboard
   const keys = useMemo(() => {
@@ -49,6 +51,7 @@ const Piano: React.FC<PianoProps> = ({ activeMidiNotes, rootMidi, notation }) =>
           {whiteKeys.map((key) => (
             <div
               key={key.midi}
+              onClick={() => onKeyClick && onKeyClick(key.midi)}
               className={`
                 relative flex-1 h-full rounded-b-md mx-[1px] z-0
                 flex items-end justify-center pb-2 md:pb-4 transition-all duration-300
@@ -56,6 +59,7 @@ const Piano: React.FC<PianoProps> = ({ activeMidiNotes, rootMidi, notation }) =>
                 ${key.isActive 
                   ? (key.isRoot ? 'bg-indigo-300 shadow-[inset_0_-10px_20px_rgba(79,70,229,0.3)]' : 'bg-indigo-200') 
                   : 'bg-white dark:bg-slate-300 hover:bg-slate-50 dark:hover:bg-slate-200'}
+                ${onKeyClick ? 'cursor-pointer' : ''}
               `}
             >
                {/* Note Label */}
@@ -88,6 +92,7 @@ const Piano: React.FC<PianoProps> = ({ activeMidiNotes, rootMidi, notation }) =>
             return (
               <div
                 key={key.midi}
+                onClick={() => onKeyClick && onKeyClick(key.midi)}
                 style={{ 
                     left: `calc(${totalWhiteKeysBefore * whiteKeyWidthPct}% - (${blackKeyWidth / 2}%))`
                 }}
@@ -100,6 +105,7 @@ const Piano: React.FC<PianoProps> = ({ activeMidiNotes, rootMidi, notation }) =>
                   ${key.isActive 
                     ? 'bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.6)]' 
                     : 'bg-slate-900 bg-gradient-to-b from-slate-800 to-black'}
+                  ${onKeyClick ? 'cursor-pointer' : ''}
                 `}
               >
                  {/* Optional Black Key Label if active */}
