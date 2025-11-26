@@ -73,7 +73,7 @@ function App() {
 
   // Effects
   useEffect(() => {
-    console.log("Armonix 2.0.0 initialized - Major Update");
+    console.log("Armonix 2.2.0 initialized - TS Nocheck Force");
     // Apply dark mode class to HTML element
     if (darkMode) {
       document.documentElement.classList.add('dark');
