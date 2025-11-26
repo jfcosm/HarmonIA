@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo } from 'react';
 import Piano from './components/Piano';
 import Guitar from './components/Guitar';
@@ -73,7 +72,7 @@ function App() {
 
   // Effects
   useEffect(() => {
-    console.log("Armonix 1.4.0 initialized");
+    console.log("Armonix 1.5.2 initialized");
     // Apply dark mode class to HTML element
     if (darkMode) {
       document.documentElement.classList.add('dark');
