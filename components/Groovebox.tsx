@@ -31,8 +31,8 @@ DEFAULT_BASS[10] = { active: true, note: 'F', octave: 0 };
 DEFAULT_BASS[12] = { active: true, note: 'C', octave: 0 };
 DEFAULT_BASS[14] = { active: true, note: 'Bb', octave: 0 };
 
-// --- KNOB COMPONENT ---
-interface KnobProps {
+// --- SLIDER COMPONENT (Mobile Friendly Replacement for Knobs) ---
+interface RangeSliderProps {
   label: string;
   value: number;
   min: number;
@@ -40,41 +40,21 @@ interface KnobProps {
   onChange: (val: number) => void;
 }
 
-const Knob: React.FC<KnobProps> = ({ label, value, min, max, onChange }) => {
-  const rotation = ((value - min) / (max - min)) * 270 - 135; // -135 to 135 degrees
-
-  const handleDrag = (e: React.MouseEvent) => {
-    const startY = e.clientY;
-    const startValue = value;
-    
-    const onMouseMove = (moveEvent: MouseEvent) => {
-      const deltaY = startY - moveEvent.clientY;
-      const range = max - min;
-      // Sensitivity: full range over 200px
-      let newValue = startValue + (deltaY / 200) * range;
-      newValue = Math.max(min, Math.min(max, newValue));
-      onChange(newValue);
-    };
-
-    const onMouseUp = () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  };
-
+const RangeSlider: React.FC<RangeSliderProps> = ({ label, value, min, max, onChange }) => {
   return (
-    <div className="flex flex-col items-center gap-2 cursor-ns-resize group select-none" onMouseDown={handleDrag}>
-      <div className="relative w-14 h-14 rounded-full bg-slate-100 dark:bg-slate-800 shadow-[0_4px_6px_rgba(0,0,0,0.05),inset_0_2px_4px_rgba(255,255,255,0.8)] dark:shadow-none border border-slate-200 dark:border-slate-700 flex items-center justify-center group-hover:border-indigo-400 transition-colors">
-        {/* Indicator Line */}
-        <div 
-          className="w-1.5 h-6 bg-indigo-500 rounded-full absolute top-1.5 origin-bottom shadow-sm"
-          style={{ transform: `rotate(${rotation}deg) translateY(-50%)`, transformOrigin: '50% 100%' }}
-        ></div>
+    <div className="flex flex-col gap-1 w-full max-w-[120px]">
+      <div className="flex justify-between items-end mb-1">
+        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">{label}</span>
+        <span className="text-[10px] font-mono font-bold text-indigo-500">{Math.round(value)}</span>
       </div>
-      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 group-hover:text-indigo-500 transition-colors">{label}</span>
+      <input 
+        type="range" 
+        min={min} 
+        max={max} 
+        value={value} 
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-600 hover:accent-indigo-500"
+      />
     </div>
   );
 };
@@ -254,7 +234,8 @@ const Groovebox: React.FC<GrooveboxProps> = ({ language }) => {
 
         {/* --- GLOBAL CONTROLS --- */}
         <div className="flex flex-wrap gap-8 mb-8 items-end border-b border-slate-100 dark:border-slate-800 pb-8">
-            <Knob label={t.bpm} value={tempo} min={60} max={200} onChange={setTempo} />
+            {/* Replaced Knob with RangeSlider for Mobile Support */}
+            <RangeSlider label={t.bpm} value={tempo} min={60} max={200} onChange={setTempo} />
             
             <div className="flex gap-3 ml-auto">
                 <button 
@@ -337,10 +318,10 @@ const Groovebox: React.FC<GrooveboxProps> = ({ language }) => {
             <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">Bass (Acid)</h3>
                 
-                {/* Synthesis Knobs */}
-                <div className="flex gap-6">
-                    <Knob label="Cutoff" value={cutoff} min={100} max={5000} onChange={setCutoff} />
-                    <Knob label="Reson" value={resonance} min={0} max={20} onChange={setResonance} />
+                {/* Synthesis Sliders (Replaced Knobs) */}
+                <div className="flex gap-4 md:gap-6">
+                    <RangeSlider label="Cutoff" value={cutoff} min={100} max={5000} onChange={setCutoff} />
+                    <RangeSlider label="Reson" value={resonance} min={0} max={20} onChange={setResonance} />
                 </div>
             </div>
 

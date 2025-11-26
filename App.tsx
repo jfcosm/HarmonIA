@@ -22,7 +22,6 @@ const getChordName = (rootIndex: number, quality: string, extension: ChordExtens
   let qualitySuffix = '';
   if (quality === 'minor') qualitySuffix = 'm';
   
-  // Handle specific naming conventions
   if (extension === 'dim') qualitySuffix = ''; 
   if (extension === 'aug') qualitySuffix = ''; 
   
@@ -73,8 +72,7 @@ function App() {
 
   // Effects
   useEffect(() => {
-    console.log("Armonix 2.2.0 initialized - TS Nocheck Force");
-    // Apply dark mode class to HTML element
+    console.log("Armonix 4.0.0 - System Ready");
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
