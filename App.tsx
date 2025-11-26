@@ -73,7 +73,7 @@ function App() {
 
   // Effects
   useEffect(() => {
-    console.log("Armonix 1.8.2 initialized - Sync ID: " + Date.now());
+    console.log("Armonix 1.9.0 initialized - Force Git Update");
     // Apply dark mode class to HTML element
     if (darkMode) {
       document.documentElement.classList.add('dark');

@@ -58,7 +58,8 @@ export class TunerEngine {
     if (!this.isRunning || !this.analyser || !this.audioContext) return null;
 
     this.analyser.getFloatTimeDomainData(this.buffer);
-    const freq = this.autoCorrelate(this.buffer, this.audioContext.sampleRate);
+    // TypeScript Fix: Explicitly treat this.buffer as Float32Array to avoid ArrayBufferLike mismatch issues
+    const freq = this.autoCorrelate(this.buffer as Float32Array, this.audioContext.sampleRate);
 
     if (freq === -1) return null;
 
@@ -74,6 +75,7 @@ export class TunerEngine {
   }
 
   // Auto-correlation algorithm (YIN-like simplification)
+  // Explicitly typing buf as Float32Array
   private autoCorrelate(buf: Float32Array, sampleRate: number): number {
     // RMS (Root Mean Square) to check signal volume
     let size = buf.length;
@@ -97,14 +99,15 @@ export class TunerEngine {
       if (Math.abs(buf[size - i]) < thres) { r2 = size - i; break; }
     }
 
-    buf = buf.slice(r1, r2);
-    size = buf.length;
+    // Slicing a Float32Array returns a new Float32Array (view), which is compatible
+    const slicedBuf = buf.slice(r1, r2);
+    size = slicedBuf.length;
 
     // Auto correlation
     const c = new Array(size).fill(0);
     for (let i = 0; i < size; i++) {
       for (let j = 0; j < size - i; j++) {
-        c[i] = c[i] + buf[j] * buf[j + i];
+        c[i] = c[i] + slicedBuf[j] * slicedBuf[j + i];
       }
     }
 
