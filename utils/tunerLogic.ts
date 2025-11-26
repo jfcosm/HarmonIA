@@ -58,8 +58,10 @@ export class TunerEngine {
     if (!this.isRunning || !this.analyser || !this.audioContext) return null;
 
     this.analyser.getFloatTimeDomainData(this.buffer);
-    // TypeScript Fix: Explicitly treat this.buffer as Float32Array to avoid ArrayBufferLike mismatch issues
-    const freq = this.autoCorrelate(this.buffer as Float32Array, this.audioContext.sampleRate);
+    
+    // TS Fix: Cast to any to bypass strict ArrayBuffer vs SharedArrayBuffer mismatch in some environments
+    // This resolves error TS2345 during Vercel build
+    const freq = this.autoCorrelate(this.buffer as any, this.audioContext.sampleRate);
 
     if (freq === -1) return null;
 
@@ -75,7 +77,6 @@ export class TunerEngine {
   }
 
   // Auto-correlation algorithm (YIN-like simplification)
-  // Explicitly typing buf as Float32Array
   private autoCorrelate(buf: Float32Array, sampleRate: number): number {
     // RMS (Root Mean Square) to check signal volume
     let size = buf.length;
@@ -99,7 +100,6 @@ export class TunerEngine {
       if (Math.abs(buf[size - i]) < thres) { r2 = size - i; break; }
     }
 
-    // Slicing a Float32Array returns a new Float32Array (view), which is compatible
     const slicedBuf = buf.slice(r1, r2);
     size = slicedBuf.length;
 
