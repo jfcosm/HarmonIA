@@ -1,3 +1,4 @@
+// Armonix v4.2.0 Update
 import { GUITAR_VOICINGS, NOTES } from '../constants';
 import { GuitarVoicing, ChordExtensionType } from '../types';
 

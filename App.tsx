@@ -1,3 +1,4 @@
+// Armonix v4.2.0 Update
 import { useState, useEffect, useMemo } from 'react';
 import Piano from './components/Piano';
 import Guitar from './components/Guitar';
@@ -72,7 +73,7 @@ function App() {
 
   // Effects
   useEffect(() => {
-    console.log("Armonix 4.0.0 - System Ready");
+    console.log("Armonix 4.2.0 - System Ready");
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {

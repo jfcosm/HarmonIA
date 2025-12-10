@@ -1,4 +1,4 @@
-
+// Armonix v4.2.0 Update
 import { QUALITIES, EXTENSIONS, NOTES } from '../constants';
 import { ChordExtensionType, NoteDefinition, NoteNotation } from '../types';
 

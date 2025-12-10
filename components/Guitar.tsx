@@ -1,3 +1,4 @@
+// Armonix v4.2.0 Update
 import React from 'react';
 import { GuitarVoicing, Language } from '../types';
 import { TRANSLATIONS } from '../constants';

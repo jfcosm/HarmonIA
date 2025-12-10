@@ -1,4 +1,4 @@
-
+// Armonix v4.2.0 Update
 import React from 'react';
 import { NOTES, EXTENSIONS, TRANSLATIONS } from '../constants';
 import { NoteNotation, ChordExtensionType, Language, Instrument } from '../types';

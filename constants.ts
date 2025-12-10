@@ -1,5 +1,4 @@
-
-
+// Armonix v4.3.0 Update
 import { NoteDefinition, ChordExtensionType, Language, GuitarVoicing } from './types';
 
 export const NOTES: NoteDefinition[] = [
@@ -37,15 +36,15 @@ export const EXTENSIONS: Record<ChordExtensionType, { name: string, intervals: (
   },
   '9': { 
     name: '9', 
-    intervals: (base) => [...base, 10, 14] // Dom7 + 9
+    intervals: (base) => [...base, 10, 14] 
   },
   'add9': {
     name: 'add9',
-    intervals: (base) => [...base, 14] // Triad + 9 (No 7th)
+    intervals: (base) => [...base, 14] 
   },
   'maj9': {
     name: 'maj9', 
-    intervals: (base) => [...base, 11, 14] // Maj7 + 9
+    intervals: (base) => [...base, 11, 14] 
   },
   'sus2': { 
     name: 'sus2', 
@@ -56,8 +55,8 @@ export const EXTENSIONS: Record<ChordExtensionType, { name: string, intervals: (
     intervals: (base) => [base[0], 5, base[2]] 
   },
   '7sus4': {
-    name: '7sus4',
-    intervals: () => [0, 5, 7, 10] // Root, 4, 5, b7 (Overrides base)
+    name: '7sus4', 
+    intervals: () => [0, 5, 7, 10] 
   },
   '6': {
     name: '6',
@@ -73,15 +72,15 @@ export const EXTENSIONS: Record<ChordExtensionType, { name: string, intervals: (
   },
   'm7b5': {
     name: 'm7b5',
-    intervals: () => [0, 3, 6, 10] // Root, b3, b5, b7 (Overrides base to dim triad + min7)
+    intervals: () => [0, 3, 6, 10] 
   },
   'maj7#11': {
     name: 'maj7#11',
-    intervals: (base) => [...base, 11, 18] // Base(Maj), 7, #11
+    intervals: (base) => [...base, 11, 18] 
   },
   'maj13': {
     name: 'maj13',
-    intervals: (base) => [...base, 11, 21] // Base(Maj), 7, 13
+    intervals: (base) => [...base, 11, 21] 
   }
 };
 
@@ -116,7 +115,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     guitar: "Guitar",
     close: "Close",
     guitarNoVoicing: "Voicing unavailable in first 5 frets.",
-    footerText: "Armonix v 1.1 is an application developed with the good energy of",
+    footerText: "Armonix v 1.3 is an application developed with the good energy of",
     composerTitle: "Song Composer",
     composerSubtitle: "Generate chord progressions based on your style.",
     lblStyle: "Style",
@@ -140,7 +139,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     complexity_basic: "Basic",
     complexity_intermediate: "Intermediate",
     complexity_advanced: "Advanced",
-    // Detector
     detectorTitle: "Chord Detector",
     detectorSubtitle: "Select at least 3 keys on the piano to identify the chord.",
     clearKeys: "Clear Keys",
@@ -148,7 +146,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     chordDetected: "Detected Chord",
     selectMoreKeys: "Select at least 3 keys...",
     unknownChord: "Unknown Chord",
-    // Groovebox
     grooveTitle: "Groovebox",
     grooveSubtitle: "Create beats and basslines with the built-in engine.",
     bpm: "BPM",
@@ -161,12 +158,29 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "Randomize",
     groovePitch: "Pitch",
     grooveInstruction: "Select a step above • Press key to assign pitch",
-    // Tuner
     tunerTitle: "Instrument Tuner",
     tunerSubtitle: "Use your microphone to tune your instrument.",
     micError: "Microphone access denied or not available.",
     startTuner: "Start Tuner",
     stopTuner: "Stop Tuner",
+    // Synx
+    synxTitle: "SYNX",
+    waveform: "Waveform",
+    attack: "Attack",
+    decay: "Decay",
+    sustain: "Sustain",
+    release: "Release",
+    arpeggiator: "Arpeggiator",
+    cutoff: "Cutoff",
+    resonance: "Res",
+    savePattern: "Save",
+    loadPattern: "Load",
+    sessionCode: "Session Code",
+    copy: "Copy",
+    import: "Import",
+    export: "Export",
+    globalSteps: "Global Steps (Patterns)",
+    stepSaveMode: "SAVE MODE",
   },
   es: {
     appTitle: "Armonix",
@@ -198,7 +212,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     guitar: "Guitarra",
     close: "Cerrar",
     guitarNoVoicing: "Posición no disponible en los primeros 5 trastes.",
-    footerText: "Armonix v 1.1 es una aplicación desarrollada con la buena energía de",
+    footerText: "Armonix v 1.3 es una aplicación desarrollada con la buena energía de",
     composerTitle: "Compositor de Canciones",
     composerSubtitle: "Genera progresiones de acordes basadas en tu estilo.",
     lblStyle: "Estilo",
@@ -222,7 +236,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     complexity_basic: "Básico",
     complexity_intermediate: "Intermedio",
     complexity_advanced: "Avanzado",
-    // Detector
     detectorTitle: "Detector de Acordes",
     detectorSubtitle: "Selecciona al menos 3 teclas en el piano para identificar el acorde.",
     clearKeys: "Limpiar Teclas",
@@ -230,7 +243,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     chordDetected: "Acorde Detectado",
     selectMoreKeys: "Selecciona al menos 3 teclas...",
     unknownChord: "Acorde Desconocido",
-    // Groovebox
     grooveTitle: "Groovebox",
     grooveSubtitle: "Crea ritmos y bajos con el motor integrado.",
     bpm: "BPM",
@@ -243,12 +255,29 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "Aleatorio",
     groovePitch: "Tono",
     grooveInstruction: "Selecciona un paso arriba • Presiona tecla para asignar tono",
-    // Tuner
-    tunerTitle: "Afinador de Instrumentos",
+    tunerTitle: "Afinador",
     tunerSubtitle: "Usa tu micrófono para afinar tu instrumento.",
-    micError: "Acceso al micrófono denegado o no disponible.",
     startTuner: "Iniciar Afinador",
     stopTuner: "Detener Afinador",
+    micError: "Acceso al micrófono denegado o no disponible.",
+    // Synx
+    synxTitle: "SYNX",
+    waveform: "Onda",
+    attack: "Ataque",
+    decay: "Decay",
+    sustain: "Sustain",
+    release: "Release",
+    arpeggiator: "Arpegiador",
+    cutoff: "Cutoff",
+    resonance: "Res",
+    savePattern: "Guardar",
+    loadPattern: "Cargar",
+    sessionCode: "Código de Sesión",
+    copy: "Copiar",
+    import: "Importar",
+    export: "Exportar",
+    globalSteps: "Secuenciador Global (Patrones)",
+    stepSaveMode: "MODO GUARDAR",
   },
   it: {
     appTitle: "Armonix",
@@ -280,7 +309,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     guitar: "Chitarra",
     close: "Chiudi",
     guitarNoVoicing: "Posizione non disponibile nei primi 5 tasti.",
-    footerText: "Armonix v 1.1 è un'applicazione sviluppata con la buona energia di",
+    footerText: "Armonix v 1.3 è un'applicazione sviluppata con la buona energia di",
     composerTitle: "Compositore di Canzoni",
     composerSubtitle: "Genera progressioni di accordi basate sul tuo stile.",
     lblStyle: "Stile",
@@ -304,7 +333,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     complexity_basic: "Base",
     complexity_intermediate: "Intermedio",
     complexity_advanced: "Avanzato",
-    // Detector
     detectorTitle: "Rilevatore di Accordi",
     detectorSubtitle: "Seleziona almeno 3 tasti sul pianoforte per identificare l'accordo.",
     clearKeys: "Pulisci Tasti",
@@ -312,7 +340,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     chordDetected: "Accordo Rilevato",
     selectMoreKeys: "Seleziona almeno 3 tasti...",
     unknownChord: "Accordo Sconosciuto",
-    // Groovebox
     grooveTitle: "Groovebox",
     grooveSubtitle: "Crea ritmi e bassi con il motore integrato.",
     bpm: "BPM",
@@ -325,12 +352,29 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "Casuale",
     groovePitch: "Tono",
     grooveInstruction: "Seleziona un passo sopra • Premi un tasto per assegnare il tono",
-    // Tuner
-    tunerTitle: "Accordatore Strumenti",
+    tunerTitle: "Accordatore",
     tunerSubtitle: "Usa il microfono per accordare il tuo strumento.",
-    micError: "Accesso al microfono negato o non disponibile.",
     startTuner: "Avvia Accordatore",
     stopTuner: "Ferma Accordatore",
+    micError: "Accesso al microfono negato o non disponibile.",
+    // Synx
+    synxTitle: "SYNX",
+    waveform: "Onda",
+    attack: "Attacco",
+    decay: "Decadimento",
+    sustain: "Sostegno",
+    release: "Rilascio",
+    arpeggiator: "Arpeggiatore",
+    cutoff: "Cutoff",
+    resonance: "Ris",
+    savePattern: "Salva",
+    loadPattern: "Carica",
+    sessionCode: "Codice Sessione",
+    copy: "Copia",
+    import: "Importa",
+    export: "Esporta",
+    globalSteps: "Passi Globali (Pattern)",
+    stepSaveMode: "MODALITÀ SALVA",
   },
   fr: {
     appTitle: "Armonix",
@@ -362,7 +406,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     guitar: "Guitare",
     close: "Fermer",
     guitarNoVoicing: "Position non disponible dans les 5 premières frettes.",
-    footerText: "Armonix v 1.1 est une application développée avec la bonne énergie de",
+    footerText: "Armonix v 1.3 est une application développée avec la bonne énergie de",
     composerTitle: "Compositeur de Chansons",
     composerSubtitle: "Générez des progressions d'accords basées sur votre style.",
     lblStyle: "Style",
@@ -386,7 +430,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     complexity_basic: "Basique",
     complexity_intermediate: "Intermédiaire",
     complexity_advanced: "Avancé",
-    // Detector
     detectorTitle: "Détecteur d'Accords",
     detectorSubtitle: "Sélectionnez au moins 3 touches sur le piano pour identifier l'accord.",
     clearKeys: "Effacer les touches",
@@ -394,7 +437,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     chordDetected: "Accord Détecté",
     selectMoreKeys: "Sélectionnez au moins 3 touches...",
     unknownChord: "Accord Inconnu",
-    // Groovebox
     grooveTitle: "Groovebox",
     grooveSubtitle: "Créez des rythmes et des basses avec le moteur intégré.",
     bpm: "BPM",
@@ -407,12 +449,29 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "Aléatoire",
     groovePitch: "Hauteur",
     grooveInstruction: "Sélectionnez une étape ci-dessus • Appuyez sur une touche",
-    // Tuner
-    tunerTitle: "Accordeur d'Instruments",
+    tunerTitle: "Accordeur",
     tunerSubtitle: "Utilisez votre microphone pour accorder votre instrument.",
+    startTuner: "Démarrer l'accordeur",
+    stopTuner: "Arrêter l'accordeur",
     micError: "Accès au microphone refusé ou non disponible.",
-    startTuner: "Démarrer l'Accordeur",
-    stopTuner: "Arrêter l'Accordeur",
+    // Synx
+    synxTitle: "SYNX",
+    waveform: "Onde",
+    attack: "Attaque",
+    decay: "Déclin",
+    sustain: "Soutien",
+    release: "Relâchement",
+    arpeggiator: "Arpégiateur",
+    cutoff: "Cutoff",
+    resonance: "Rés",
+    savePattern: "Sauvegarder",
+    loadPattern: "Charger",
+    sessionCode: "Code de Session",
+    copy: "Copier",
+    import: "Importer",
+    export: "Exporter",
+    globalSteps: "Pas Globaux (Motifs)",
+    stepSaveMode: "MODE ENREGISTREMENT",
   },
   de: {
     appTitle: "Armonix",
@@ -444,7 +503,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     guitar: "Gitarre",
     close: "Schließen",
     guitarNoVoicing: "Keine Griffweise in den ersten 5 Bünden verfügbar.",
-    footerText: "Armonix v 1.1 ist eine Anwendung, die mit der guten Energie von",
+    footerText: "Armonix v 1.3 ist eine Anwendung, die mit der guten Energie von",
     composerTitle: "Song-Komponist",
     composerSubtitle: "Generiere Akkordfolgen basierend auf deinem Stil.",
     lblStyle: "Stil",
@@ -468,7 +527,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     complexity_basic: "Basis",
     complexity_intermediate: "Mittel",
     complexity_advanced: "Fortgeschritten",
-    // Detector
     detectorTitle: "Akkord-Detektor",
     detectorSubtitle: "Wähle mindestens 3 Tasten auf dem Klavier, um den Akkord zu identifizieren.",
     clearKeys: "Tasten Löschen",
@@ -476,7 +534,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     chordDetected: "Erkannter Akkord",
     selectMoreKeys: "Wähle mindestens 3 Tasten...",
     unknownChord: "Unbekannter Akkord",
-    // Groovebox
     grooveTitle: "Groovebox",
     grooveSubtitle: "Erstelle Beats und Basslines mit der integrierten Engine.",
     bpm: "BPM",
@@ -489,12 +546,29 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "Zufällig",
     groovePitch: "Tonhöhe",
     grooveInstruction: "Wähle oben einen Schritt • Drücke Taste für Tonhöhe",
-    // Tuner
-    tunerTitle: "Instrumentenstimmgerät",
+    tunerTitle: "Stimmgerät",
     tunerSubtitle: "Verwende dein Mikrofon, um dein Instrument zu stimmen.",
-    micError: "Mikrofonzugriff verweigert oder nicht verfügbar.",
     startTuner: "Stimmgerät starten",
     stopTuner: "Stimmgerät stoppen",
+    micError: "Mikrofonzugriff verweigert oder nicht verfügbar.",
+    // Synx
+    synxTitle: "SYNX",
+    waveform: "Wellenform",
+    attack: "Attack",
+    decay: "Decay",
+    sustain: "Sustain",
+    release: "Release",
+    arpeggiator: "Arpeggiator",
+    cutoff: "Cutoff",
+    resonance: "Res",
+    savePattern: "Speichern",
+    loadPattern: "Laden",
+    sessionCode: "Sitzungscode",
+    copy: "Kopieren",
+    import: "Importieren",
+    export: "Exportieren",
+    globalSteps: "Globale Schritte (Muster)",
+    stepSaveMode: "SPEICHERMODUS",
   },
   zh: {
     appTitle: "Armonix",
@@ -526,7 +600,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     guitar: "吉他",
     close: "关闭",
     guitarNoVoicing: "前5品无可用指法。",
-    footerText: "Armonix v 1.1 是由以下良好能量开发的应用程序：",
+    footerText: "Armonix v 1.3 是由以下良好能量开发的应用程序：",
     composerTitle: "歌曲创作者",
     composerSubtitle: "根据您的风格生成和弦进行。",
     lblStyle: "风格",
@@ -550,7 +624,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     complexity_basic: "基础",
     complexity_intermediate: "中级",
     complexity_advanced: "高级",
-    // Detector
     detectorTitle: "和弦识别器",
     detectorSubtitle: "在钢琴上至少选择3个键以识别和弦。",
     clearKeys: "清除按键",
@@ -558,7 +631,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     chordDetected: "检测到的和弦",
     selectMoreKeys: "请至少选择3个键...",
     unknownChord: "未知和弦",
-    // Groovebox
     grooveTitle: "Groovebox",
     grooveSubtitle: "使用内置引擎创建节拍和贝斯线。",
     bpm: "BPM",
@@ -571,12 +643,29 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "随机",
     groovePitch: "音高",
     grooveInstruction: "选择上方的一个步骤 • 按键分配音高",
-    // Tuner
-    tunerTitle: "乐器调音器",
+    tunerTitle: "调音器",
     tunerSubtitle: "使用麦克风为您的乐器调音。",
-    micError: "麦克风访问被拒绝或不可用。",
     startTuner: "启动调音器",
     stopTuner: "停止调音器",
+    micError: "麦克风访问被拒绝或不可用。",
+    // Synx
+    synxTitle: "SYNX",
+    waveform: "波形",
+    attack: "起音",
+    decay: "衰减",
+    sustain: "延音",
+    release: "释放",
+    arpeggiator: "琶音器",
+    cutoff: "截止频率",
+    resonance: "共振",
+    savePattern: "保存",
+    loadPattern: "加载",
+    sessionCode: "会话代码",
+    copy: "复制",
+    import: "导入",
+    export: "导出",
+    globalSteps: "全局步骤（模式）",
+    stepSaveMode: "保存模式",
   },
   ja: {
     appTitle: "Armonix",
@@ -608,7 +697,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     guitar: "ギター",
     close: "閉じる",
     guitarNoVoicing: "最初の5フレットで利用可能なボイシングがありません。",
-    footerText: "Armonix v 1.1は、以下の良いエネルギーで開発されたアプリケーションです：",
+    footerText: "Armonix v 1.3は、以下の良いエネルギーで開発されたアプリケーションです：",
     composerTitle: "ソングコンポーザー",
     composerSubtitle: "あなたのスタイルに基づいてコード進行を生成します。",
     lblStyle: "スタイル",
@@ -632,7 +721,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     complexity_basic: "基本",
     complexity_intermediate: "中級",
     complexity_advanced: "上級",
-    // Detector
     detectorTitle: "コード検出器",
     detectorSubtitle: "ピアノ上のキーを3つ以上選択して、コードを特定してください。",
     clearKeys: "キーをクリア",
@@ -640,7 +728,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     chordDetected: "検出されたコード",
     selectMoreKeys: "3つ以上のキーを選択してください...",
     unknownChord: "不明なコード",
-    // Groovebox
     grooveTitle: "グルーヴボックス",
     grooveSubtitle: "内蔵エンジンでビートとベースラインを作成します。",
     bpm: "BPM",
@@ -653,12 +740,29 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "ランダム",
     groovePitch: "ピッチ",
     grooveInstruction: "上のステップを選択 • キーを押してピッチを割り当て",
-    // Tuner
-    tunerTitle: "楽器チューナー",
-    tunerSubtitle: "マイクを使って楽器をチューニングします。",
-    micError: "マイクへのアクセスが拒否されたか、利用できません。",
+    tunerTitle: "チューナー",
+    tunerSubtitle: "マイクを使用して楽器をチューニングします。",
     startTuner: "チューナーを開始",
     stopTuner: "チューナーを停止",
+    micError: "マイクへのアクセスが拒否されたか、利用できません。",
+    // Synx
+    synxTitle: "SYNX",
+    waveform: "波形",
+    attack: "アタック",
+    decay: "ディケイ",
+    sustain: "サステイン",
+    release: "リリース",
+    arpeggiator: "アルペジエーター",
+    cutoff: "カットオフ",
+    resonance: "レゾナンス",
+    savePattern: "保存",
+    loadPattern: "ロード",
+    sessionCode: "セッションコード",
+    copy: "コピー",
+    import: "インポート",
+    export: "エクスポート",
+    globalSteps: "グローバルステップ（パターン）",
+    stepSaveMode: "保存モード",
   },
   ko: {
     appTitle: "Armonix",
@@ -690,7 +794,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     guitar: "기타",
     close: "닫기",
     guitarNoVoicing: "처음 5프렛 내에서 가능한 보이싱이 없습니다.",
-    footerText: "Armonix v 1.1는 다음의 좋은 에너지로 개발된 애플리케이션입니다:",
+    footerText: "Armonix v 1.3는 다음의 좋은 에너지로 개발된 애플리케이션입니다:",
     composerTitle: "노래 작곡",
     composerSubtitle: "스타일에 따라 코드 진행을 생성하세요.",
     lblStyle: "스타일",
@@ -714,7 +818,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     complexity_basic: "기본",
     complexity_intermediate: "중급",
     complexity_advanced: "고급",
-    // Detector
     detectorTitle: "코드 감지기",
     detectorSubtitle: "코드를 식별하려면 피아노에서 최소 3개의 키를 선택하세요.",
     clearKeys: "키 지우기",
@@ -722,7 +825,6 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     chordDetected: "감지된 코드",
     selectMoreKeys: "최소 3개의 키를 선택하세요...",
     unknownChord: "알 수 없는 코드",
-    // Groovebox
     grooveTitle: "그루브박스",
     grooveSubtitle: "내장 엔진으로 비트와 베이스 라인을 만드세요.",
     bpm: "BPM",
@@ -735,12 +837,29 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     randomize: "무작위",
     groovePitch: "피치",
     grooveInstruction: "위의 단계를 선택하세요 • 키를 눌러 피치 할당",
-    // Tuner
-    tunerTitle: "악기 튜너",
-    tunerSubtitle: "마이크를 사용하여 악기를 조율하세요.",
-    micError: "마이크 액세스가 거부되었거나 사용할 수 없습니다.",
+    tunerTitle: "튜너",
+    tunerSubtitle: "마이크를 사용하여 악기를 튜닝하세요.",
     startTuner: "튜너 시작",
     stopTuner: "튜너 중지",
+    micError: "마이크 액세스가 거부되었거나 사용할 수 없습니다.",
+    // Synx
+    synxTitle: "SYNX",
+    waveform: "파형",
+    attack: "공격",
+    decay: "감쇠",
+    sustain: "지속",
+    release: "릴리스",
+    arpeggiator: "아르페지에이터",
+    cutoff: "컷오프",
+    resonance: "공명",
+    savePattern: "저장",
+    loadPattern: "로드",
+    sessionCode: "세션 코드",
+    copy: "복사",
+    import: "가져오기",
+    export: "내보내기",
+    globalSteps: "글로벌 스텝 (패턴)",
+    stepSaveMode: "저장 모드",
   }
 };
 

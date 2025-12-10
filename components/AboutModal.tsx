@@ -1,3 +1,4 @@
+// Armonix v4.2.0 Update
 import React from 'react';
 import { X, Heart } from 'lucide-react';
 import { TRANSLATIONS } from '../constants';

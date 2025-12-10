@@ -1,14 +1,21 @@
-
+// Armonix v4.2.0 Update
 /**
- * Simple synthesis engine for Groovebox (TR-909 / TB-303 style)
+ * Simple synthesis engine for Groovebox (TR-909 / TB-303 / Synx style)
  */
 
 export type InstrumentType = 'kick' | 'snare' | 'hihat' | 'clap';
+export type Waveform = 'sine' | 'triangle' | 'sawtooth' | 'square';
 
 export interface BassStep {
   active: boolean;
   note: string; // e.g. 'C', 'F#'
-  octave: number; // relative to base 303 octave (usually 2)
+  octave: number; // relative to base octave
+}
+
+export interface SynxStep {
+  active: boolean;
+  note: string;
+  octave: number;
 }
 
 export class GrooveboxEngine {
@@ -19,23 +26,37 @@ export class GrooveboxEngine {
   private isPlaying: boolean = false;
   private tempo: number = 120;
   
-  // Synth Parameters
+  // Bass Synth Parameters
   private filterCutoff: number = 500; // Hz
   private filterResonance: number = 5; // Q
   
+  // Synx Synth Parameters
+  private synxWaveform: Waveform = 'triangle';
+  private synxCutoff: number = 2000;
+  private synxResonance: number = 2;
+  private synxAttack: number = 0.05;
+  private synxDecay: number = 0.1;
+  private synxSustain: number = 0.5;
+  private synxRelease: number = 0.2;
+  private synxArpEnabled: boolean = false;
+
   // Callbacks to UI
   private onStep: (step: number) => void;
   private getDrumPattern: () => Record<InstrumentType, boolean[]>;
   private getBassPattern: () => BassStep[];
+  private getSynxPattern: () => SynxStep[];
 
   constructor(
     onStepCallback: (step: number) => void, 
     getDrumPatternCb: () => Record<InstrumentType, boolean[]>,
-    getBassPatternCb: () => BassStep[]
+    getBassPatternCb: () => BassStep[],
+    getSynxPatternCb: () => SynxStep[]
   ) {
     this.onStep = onStepCallback;
     this.getDrumPattern = getDrumPatternCb;
     this.getBassPattern = getBassPatternCb;
+    this.getSynxPattern = getSynxPatternCb;
+    console.log("Groovebox Engine Initialized - v4.2.0");
   }
 
   private initAudioContext() {
@@ -74,12 +95,27 @@ export class GrooveboxEngine {
     this.filterResonance = resonance;
   }
 
+  public setSynxParams(
+    waveform: Waveform,
+    cutoff: number,
+    res: number,
+    a: number, d: number, s: number, r: number,
+    arp: boolean
+  ) {
+    this.synxWaveform = waveform;
+    this.synxCutoff = cutoff;
+    this.synxResonance = res;
+    this.synxAttack = a;
+    this.synxDecay = d;
+    this.synxSustain = s;
+    this.synxRelease = r;
+    this.synxArpEnabled = arp;
+  }
+
   // Lookahead scheduler
   private scheduler() {
     if (!this.isPlaying || !this.audioContext) return;
 
-    // while there are notes that will need to play before the next interval, 
-    // schedule them and advance the pointer.
     while (this.nextNoteTime < this.audioContext.currentTime + 0.1) {
       this.scheduleNote(this.current16thNote, this.nextNoteTime);
       this.nextStep();
@@ -105,6 +141,7 @@ export class GrooveboxEngine {
 
     const drumPattern = this.getDrumPattern();
     const bassPattern = this.getBassPattern();
+    const synxPattern = this.getSynxPattern();
 
     // Play Drums
     if (drumPattern.kick[stepNumber]) this.playKick(time);
@@ -113,9 +150,19 @@ export class GrooveboxEngine {
     if (drumPattern.clap[stepNumber]) this.playClap(time);
 
     // Play Bass
-    const step = bassPattern[stepNumber];
-    if (step && step.active) {
-        this.playBass(time, step);
+    const bassStep = bassPattern[stepNumber];
+    if (bassStep && bassStep.active) {
+        this.playBass(time, bassStep);
+    }
+
+    // Play Synx
+    const synxStep = synxPattern[stepNumber];
+    if (synxStep && synxStep.active) {
+        if (this.synxArpEnabled) {
+            this.playSynxArp(time, synxStep);
+        } else {
+            this.playSynx(time, synxStep);
+        }
     }
   }
 
@@ -251,14 +298,11 @@ export class GrooveboxEngine {
   private playBass(time: number, step: BassStep) {
     if (!this.audioContext) return;
 
-    // Basic frequency calculation
     const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
     const baseFreq = 65.41; // C2
     const noteIndex = notes.indexOf(step.note);
     if (noteIndex === -1) return;
 
-    // Calculate semitones from C2
-    // step.octave is relative to 2 (default). 0 = C2.
     const semitones = noteIndex + (step.octave * 12);
     const freq = baseFreq * Math.pow(2, semitones / 12);
 
@@ -288,5 +332,90 @@ export class GrooveboxEngine {
 
     osc.start(time);
     osc.stop(time + 0.4);
+  }
+
+  // Melodic Synth (SYNX)
+  private playSynx(time: number, step: SynxStep) {
+    if (!this.audioContext) return;
+
+    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const baseFreq = 261.63; // C4 (Middle C)
+    const noteIndex = notes.indexOf(step.note);
+    if (noteIndex === -1) return;
+
+    const semitones = noteIndex + (step.octave * 12);
+    const freq = baseFreq * Math.pow(2, semitones / 12);
+
+    const osc = this.audioContext.createOscillator();
+    osc.type = this.synxWaveform;
+    osc.frequency.setValueAtTime(freq, time);
+
+    const filter = this.audioContext.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.Q.value = this.synxResonance;
+    filter.frequency.setValueAtTime(this.synxCutoff, time);
+
+    const gain = this.audioContext.createGain();
+    
+    // ADSR Envelope
+    const attack = this.synxAttack;
+    const decay = this.synxDecay;
+    const sustain = this.synxSustain;
+    const release = this.synxRelease;
+    const holdTime = 0.2; // Duration of step approx
+
+    gain.gain.setValueAtTime(0, time);
+    gain.gain.linearRampToValueAtTime(0.4, time + attack); // Max vol 0.4
+    gain.gain.linearRampToValueAtTime(0.4 * sustain, time + attack + decay);
+    gain.gain.setValueAtTime(0.4 * sustain, time + holdTime);
+    gain.gain.linearRampToValueAtTime(0, time + holdTime + release);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.audioContext.destination);
+
+    osc.start(time);
+    osc.stop(time + holdTime + release + 0.1);
+  }
+
+  private playSynxArp(time: number, step: SynxStep) {
+    if (!this.audioContext) return;
+    
+    // Arpeggiator pattern: Root -> 5th -> Octave
+    // Play 3 very short notes within the step duration
+    const noteDuration = 0.08; 
+    
+    const playNote = (semitoneOffset: number, startTime: number) => {
+        if (!this.audioContext) return;
+        const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        const baseFreq = 261.63; 
+        const noteIndex = notes.indexOf(step.note);
+        const semitones = noteIndex + (step.octave * 12) + semitoneOffset;
+        const freq = baseFreq * Math.pow(2, semitones / 12);
+
+        const osc = this.audioContext.createOscillator();
+        osc.type = this.synxWaveform;
+        osc.frequency.setValueAtTime(freq, startTime);
+
+        const filter = this.audioContext.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = this.synxCutoff;
+
+        const gain = this.audioContext.createGain();
+        gain.gain.setValueAtTime(0, startTime);
+        gain.gain.linearRampToValueAtTime(0.3, startTime + 0.01);
+        gain.gain.linearRampToValueAtTime(0, startTime + noteDuration);
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.audioContext.destination);
+
+        osc.start(startTime);
+        osc.stop(startTime + noteDuration + 0.05);
+    };
+
+    playNote(0, time);
+    playNote(7, time + noteDuration);
+    playNote(12, time + noteDuration * 2);
   }
 }

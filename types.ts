@@ -1,5 +1,4 @@
-
-
+// Armonix v4.2.0 Update
 export enum NoteNotation {
   AMERICAN = 'AMERICAN', // C, D, E...
   LATIN = 'LATIN',       // Do, Re, Mi...
@@ -49,3 +48,6 @@ export type SongStyle = 'pop' | 'rock' | 'ballad' | 'jazz' | 'reggae' | 'lofi' |
 export type SongMood = 'happy' | 'sad' | 'melancholic' | 'energetic' | 'relaxed' | 'epic' | 'meditation' | 'concentration';
 export type SongTempo = 'slow' | 'moderate' | 'fast';
 export type SongComplexity = 'basic' | 'intermediate' | 'advanced';
+
+// Synx Types
+export type Waveform = 'sine' | 'triangle' | 'sawtooth' | 'square';
