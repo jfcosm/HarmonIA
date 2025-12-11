@@ -185,7 +185,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Drums
     drumTitle: "Finger Drum Kit",
     drumSubtitle: "10-zone drum pad. Use keyboard keys Q-T and A-G.",
-    kitAcoustic: "Studio Maple",
+    kitAcoustic: "ElectroBeat",
     kitElectronic: "Cyber 909",
     reverb: "Reverb",
   },
@@ -289,7 +289,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Drums
     drumTitle: "Finger Drum Kit",
     drumSubtitle: "Pad de 10 zonas. Usa teclas Q-T y A-G.",
-    kitAcoustic: "Studio Maple",
+    kitAcoustic: "ElectroBeat",
     kitElectronic: "Cyber 909",
     reverb: "Reverb",
   },
@@ -393,7 +393,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Drums
     drumTitle: "Finger Drum Kit",
     drumSubtitle: "Pad 10 zone. Usa tastiera Q-T e A-G.",
-    kitAcoustic: "Studio Maple",
+    kitAcoustic: "ElectroBeat",
     kitElectronic: "Cyber 909",
     reverb: "Riverbero",
   },
@@ -497,7 +497,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Drums
     drumTitle: "Finger Drum Kit",
     drumSubtitle: "Pad de 10 zones. Clavier Q-T et A-G.",
-    kitAcoustic: "Studio Maple",
+    kitAcoustic: "ElectroBeat",
     kitElectronic: "Cyber 909",
     reverb: "Réverbération",
   },
@@ -601,7 +601,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Drums
     drumTitle: "Finger Drum Kit",
     drumSubtitle: "10-Zonen-Pad. Tasten Q-T und A-G.",
-    kitAcoustic: "Studio Maple",
+    kitAcoustic: "ElectroBeat",
     kitElectronic: "Cyber 909",
     reverb: "Hall",
   },
@@ -705,7 +705,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Drums
     drumTitle: "指鼓套件",
     drumSubtitle: "10区鼓垫。使用键盘 Q-T 和 A-G。",
-    kitAcoustic: "Studio Maple",
+    kitAcoustic: "ElectroBeat",
     kitElectronic: "Cyber 909",
     reverb: "混响",
   },
@@ -809,7 +809,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Drums
     drumTitle: "フィンガードラム",
     drumSubtitle: "10ゾーンパッド。キーボード Q-T と A-G を使用。",
-    kitAcoustic: "Studio Maple",
+    kitAcoustic: "ElectroBeat",
     kitElectronic: "Cyber 909",
     reverb: "リバーブ",
   },
@@ -913,7 +913,7 @@ export const TRANSLATIONS: Record<Language, Record<string, string>> = {
     // Drums
     drumTitle: "핑거 드럼 키트",
     drumSubtitle: "10존 패드. 키보드 Q-T 및 A-G 사용.",
-    kitAcoustic: "Studio Maple",
+    kitAcoustic: "ElectroBeat",
     kitElectronic: "Cyber 909",
     reverb: "리버브",
   }

@@ -176,9 +176,15 @@ const DrumPad: React.FC<DrumPadProps> = ({ language }) => {
                return (
                   <button
                      key={pad.id}
-                     onMouseDown={() => triggerPad(pad.id)}
+                     // Mouse: Standard Click/Down
+                     onMouseDown={(e) => triggerPad(pad.id)}
+                     // Touch: Immediate trigger + prevent ghost mouse events + prevent scrolling
+                     onTouchStart={(e) => {
+                        e.preventDefault(); 
+                        triggerPad(pad.id);
+                     }}
                      className={`
-                        relative h-24 md:h-32 rounded-xl transition-all duration-75 select-none
+                        relative h-24 md:h-32 rounded-xl transition-all duration-75 select-none touch-none
                         flex flex-col items-center justify-center
                         border-b-4 border-r-2 
                         ${isActive 
