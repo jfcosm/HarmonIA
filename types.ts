@@ -1,4 +1,4 @@
-// Armonix v4.2.0 Update
+// Armonix v4.4.0 Update
 export enum NoteNotation {
   AMERICAN = 'AMERICAN', // C, D, E...
   LATIN = 'LATIN',       // Do, Re, Mi...
@@ -8,7 +8,7 @@ export type Language = 'en' | 'es' | 'it' | 'fr' | 'de' | 'zh' | 'ja' | 'ko';
 
 export type Instrument = 'piano' | 'guitar';
 
-export type AppMode = 'visualizer' | 'composer' | 'detector' | 'groovebox' | 'tuner';
+export type AppMode = 'visualizer' | 'composer' | 'detector' | 'groovebox' | 'tuner' | 'drums';
 
 export interface NoteDefinition {
   name: string; // "C", "C#"

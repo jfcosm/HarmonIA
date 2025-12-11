@@ -1,4 +1,4 @@
-// Armonix v4.2.0 Update
+// Armonix v4.4.0 Update
 import { useState, useEffect, useMemo } from 'react';
 import Piano from './components/Piano';
 import Guitar from './components/Guitar';
@@ -8,12 +8,13 @@ import Composer from './components/Composer';
 import ChordDetector from './components/ChordDetector';
 import Groovebox from './components/Groovebox';
 import Tuner from './components/Tuner';
+import DrumPad from './components/DrumPad'; // New Import
 import { NOTES, EXTENSIONS, TRANSLATIONS } from './constants';
 import { NoteNotation, ChordExtensionType, Language, Instrument, AppMode } from './types';
 import { getChordMidiNumbers, playChordSound } from './utils/musicLogic';
 import { getGuitarVoicing } from './utils/guitarLogic';
 import { fetchChordInsight } from './services/geminiService';
-import { Music, Volume2, Sparkles, Globe, HelpCircle, PenTool, Eye, Sun, Moon, Search, Disc, Mic } from 'lucide-react';
+import { Music, Volume2, Sparkles, Globe, HelpCircle, PenTool, Eye, Sun, Moon, Search, Disc, Mic, Drum } from 'lucide-react';
 
 // Helper to construct chord name with explicit spacing
 const getChordName = (rootIndex: number, quality: string, extension: ChordExtensionType, notation: NoteNotation) => {
@@ -73,7 +74,7 @@ function App() {
 
   // Effects
   useEffect(() => {
-    console.log("Armonix 4.2.0 - System Ready");
+    console.log("Armonix 4.4.0 - System Ready");
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -197,6 +198,14 @@ function App() {
                 <Disc size={16} />
                 <span className="hidden sm:inline">{t.modeGroovebox}</span>
               </button>
+              {/* Drum Pad Mode Button */}
+              <button 
+                onClick={() => setMode('drums')}
+                className={`flex items-center gap-2 px-3 md:px-5 py-2 rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${mode === 'drums' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
+              >
+                <Drum size={16} />
+                <span className="hidden sm:inline">{t.modeDrums}</span>
+              </button>
               <button 
                 onClick={() => setMode('tuner')}
                 className={`flex items-center gap-2 px-3 md:px-5 py-2 rounded-lg text-xs md:text-sm font-bold transition-all whitespace-nowrap ${mode === 'tuner' ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'}`}
@@ -316,6 +325,13 @@ function App() {
           /* GROOVEBOX MODE */
           <section className="pb-8 w-full">
              <Groovebox language={language} />
+          </section>
+        )}
+
+        {mode === 'drums' && (
+          /* DRUM PAD MODE */
+          <section className="pb-8 w-full">
+             <DrumPad language={language} />
           </section>
         )}
 
