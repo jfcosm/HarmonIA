@@ -1,4 +1,4 @@
-// Armonix v4.2.0 Update
+// Armonix v4.8.0 Update
 import React, { useState, useEffect } from 'react';
 import Piano from './Piano';
 import { NoteNotation, Language } from '../types';
@@ -145,6 +145,7 @@ const ChordDetector: React.FC<ChordDetectorProps> = ({ language, notation, onNot
         <Piano 
           activeMidiNotes={selectedNotes}
           notation={notation}
+          language={language}
           onKeyClick={handleKeyClick}
         />
       </div>

@@ -1,6 +1,6 @@
 {
   "name": "Armonix",
-  "description": "Armonix: A modern, interactive piano chord visualizer powered by music theory and AI insights. (v4.2.0)",
+  "description": "Armonix: Your musical toolbox. Interactive piano, guitar, drums, and composer tools powered by AI. (v4.7.0)",
   "requestFramePermissions": [
     "microphone"
   ]

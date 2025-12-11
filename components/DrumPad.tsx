@@ -1,4 +1,4 @@
-// Armonix v4.4.0 - DrumPad Component
+// Armonix v4.6.0 Update - DrumPad Component
 import React, { useState, useEffect, useRef } from 'react';
 import { TRANSLATIONS } from '../constants';
 import { Language } from '../types';
@@ -16,24 +16,24 @@ interface DrumPadProps {
 
 interface PadConfig {
   id: DrumPadId;
-  label: string;
+  labelKey: string; // Key for translation
   key: string;
   color: string; // Tailwind color base
 }
 
 const PAD_LAYOUT: PadConfig[] = [
   // Row 1
-  { id: 'crash', label: 'Crash', key: 'Q', color: 'yellow' },
-  { id: 'ride', label: 'Ride', key: 'W', color: 'yellow' },
-  { id: 'tom1', label: 'Tom Hi', key: 'E', color: 'blue' },
-  { id: 'tom2', label: 'Tom Mid', key: 'R', color: 'blue' },
-  { id: 'tom3', label: 'Tom Lo', key: 'T', color: 'blue' },
+  { id: 'crash', labelKey: 'lblCrash', key: 'Q', color: 'yellow' },
+  { id: 'ride', labelKey: 'lblRide', key: 'W', color: 'yellow' },
+  { id: 'tom1', labelKey: 'lblTom1', key: 'E', color: 'blue' },
+  { id: 'tom2', labelKey: 'lblTom2', key: 'R', color: 'blue' },
+  { id: 'tom3', labelKey: 'lblTom3', key: 'T', color: 'blue' },
   // Row 2
-  { id: 'kick', label: 'Kick', key: 'A', color: 'rose' },
-  { id: 'snare', label: 'Snare', key: 'S', color: 'rose' },
-  { id: 'hihat_closed', label: 'HH Cls', key: 'D', color: 'teal' },
-  { id: 'hihat_open', label: 'HH Opn', key: 'F', color: 'teal' },
-  { id: 'clap', label: 'Clap', key: 'G', color: 'purple' },
+  { id: 'kick', labelKey: 'lblKick', key: 'A', color: 'rose' },
+  { id: 'snare', labelKey: 'lblSnare', key: 'S', color: 'rose' },
+  { id: 'hihat_closed', labelKey: 'lblHHCls', key: 'D', color: 'teal' },
+  { id: 'hihat_open', labelKey: 'lblHHOpn', key: 'F', color: 'teal' },
+  { id: 'clap', labelKey: 'lblClap', key: 'G', color: 'purple' },
 ];
 
 const DrumPad: React.FC<DrumPadProps> = ({ language }) => {
@@ -41,6 +41,7 @@ const DrumPad: React.FC<DrumPadProps> = ({ language }) => {
   const engineRef = useRef<DrumEngine | null>(null);
   const [kit, setKit] = useState<DrumKit>('acoustic');
   const [reverb, setReverb] = useState(0.3);
+  const [volume, setVolume] = useState(0.8);
   
   // Track active pads for visual feedback
   const [activePads, setActivePads] = useState<Record<string, boolean>>({});
@@ -53,8 +54,9 @@ const DrumPad: React.FC<DrumPadProps> = ({ language }) => {
     if (engineRef.current) {
       engineRef.current.setKit(kit);
       engineRef.current.setReverb(reverb);
+      engineRef.current.setVolume(volume);
     }
-  }, [kit, reverb]);
+  }, [kit, reverb, volume]);
 
   const triggerPad = (id: DrumPadId) => {
     if (engineRef.current) {
@@ -102,7 +104,7 @@ const DrumPad: React.FC<DrumPadProps> = ({ language }) => {
                <Music2 size={20} className="text-indigo-400" />
             </div>
             <div className="flex flex-col">
-               <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Kit Select</span>
+               <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{t.kitSelect}</span>
                <div className="flex gap-2 mt-1">
                   <button 
                      onClick={() => setKit('acoustic')}
@@ -120,29 +122,46 @@ const DrumPad: React.FC<DrumPadProps> = ({ language }) => {
             </div>
          </div>
 
-         {/* Reverb Knob */}
-         <div className="flex items-center gap-3">
-             <div className="bg-slate-700 p-2 rounded-lg">
-                 <Sliders size={20} className="text-emerald-400" />
-             </div>
-             <div className="flex flex-col w-32">
-                 <div className="flex justify-between mb-1">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{t.reverb}</span>
-                    <span className="text-[10px] font-mono text-emerald-400">{Math.round(reverb * 100)}%</span>
-                 </div>
-                 <input 
-                   type="range" 
-                   min="0" max="1" step="0.05"
-                   value={reverb}
-                   onChange={(e) => setReverb(parseFloat(e.target.value))}
-                   className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
-                 />
-             </div>
-         </div>
+         <div className="flex items-center gap-6">
+            {/* Reverb Knob */}
+            <div className="flex items-center gap-3">
+                <div className="bg-slate-700 p-2 rounded-lg hidden sm:block">
+                    <Sliders size={20} className="text-emerald-400" />
+                </div>
+                <div className="flex flex-col w-28 md:w-32">
+                    <div className="flex justify-between mb-1">
+                        <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">{t.reverb}</span>
+                        <span className="text-[10px] font-mono text-emerald-400">{Math.round(reverb * 100)}%</span>
+                    </div>
+                    <input 
+                    type="range" 
+                    min="0" max="1" step="0.05"
+                    value={reverb}
+                    onChange={(e) => setReverb(parseFloat(e.target.value))}
+                    className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                    />
+                </div>
+            </div>
 
-         {/* Volume Icon (Visual only) */}
-         <div className="hidden sm:block opacity-50">
-            <Volume2 size={24} />
+            {/* Volume Slider (Added Fix) */}
+            <div className="flex items-center gap-3">
+                <div className="bg-slate-700 p-2 rounded-lg">
+                    <Volume2 size={20} className="text-sky-400" />
+                </div>
+                <div className="flex flex-col w-28 md:w-32">
+                    <div className="flex justify-between mb-1">
+                        <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">VOL</span>
+                        <span className="text-[10px] font-mono text-sky-400">{Math.round(volume * 100)}%</span>
+                    </div>
+                    <input 
+                    type="range" 
+                    min="0" max="1" step="0.05"
+                    value={volume}
+                    onChange={(e) => setVolume(parseFloat(e.target.value))}
+                    className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-sky-500"
+                    />
+                </div>
+            </div>
          </div>
       </div>
 
@@ -176,15 +195,9 @@ const DrumPad: React.FC<DrumPadProps> = ({ language }) => {
                return (
                   <button
                      key={pad.id}
-                     // Mouse: Standard Click/Down
-                     onMouseDown={(e) => triggerPad(pad.id)}
-                     // Touch: Immediate trigger + prevent ghost mouse events + prevent scrolling
-                     onTouchStart={(e) => {
-                        e.preventDefault(); 
-                        triggerPad(pad.id);
-                     }}
+                     onMouseDown={() => triggerPad(pad.id)}
                      className={`
-                        relative h-24 md:h-32 rounded-xl transition-all duration-75 select-none touch-none
+                        relative h-24 md:h-32 rounded-xl transition-all duration-75 select-none
                         flex flex-col items-center justify-center
                         border-b-4 border-r-2 
                         ${isActive 
@@ -200,9 +213,9 @@ const DrumPad: React.FC<DrumPadProps> = ({ language }) => {
                         {pad.key}
                      </span>
 
-                     {/* Main Label */}
+                     {/* Main Label (Translated) */}
                      <span className={`text-sm md:text-lg font-bold uppercase tracking-wider ${isActive ? 'scale-110' : ''}`}>
-                        {pad.label}
+                        {t[pad.labelKey] || pad.labelKey}
                      </span>
                   </button>
                );
@@ -211,8 +224,8 @@ const DrumPad: React.FC<DrumPadProps> = ({ language }) => {
       </div>
       
       {/* Footer Hint */}
-      <div className="mt-4 text-xs text-slate-400 font-medium bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-full">
-         Use your keyboard keys <b>Q W E R T</b> and <b>A S D F G</b>
+      <div className="mt-4 text-xs text-slate-400 font-medium bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-full text-center">
+         {t.drumHint}
       </div>
 
     </div>

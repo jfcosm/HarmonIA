@@ -13,6 +13,7 @@ export class DrumEngine {
   private masterGain: GainNode | null = null;
   private kit: DrumKit = 'acoustic';
   private reverbLevel: number = 0.3;
+  private masterVolume: number = 0.8;
 
   constructor() {
     // Lazy init in trigger
@@ -26,20 +27,26 @@ export class DrumEngine {
     this.reverbLevel = Math.max(0, Math.min(1, amount));
   }
 
+  public setVolume(amount: number) {
+    this.masterVolume = Math.max(0, Math.min(1, amount));
+    if (this.masterGain) {
+        this.masterGain.gain.setValueAtTime(this.masterVolume, this.audioContext?.currentTime || 0);
+    }
+  }
+
   private initAudio() {
     if (!this.audioContext) {
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       
       // Master Gain
       this.masterGain = this.audioContext.createGain();
+      this.masterGain.gain.value = this.masterVolume;
       this.masterGain.connect(this.audioContext.destination);
 
       // Reverb Setup (Impulse Response)
       this.reverbNode = this.audioContext.createConvolver();
       const impulse = this.createImpulseResponse(2.0, 2.0, false);
       this.reverbNode.buffer = impulse;
-      
-      // Reverb routing handled per sound trigger to control send amount
     }
     if (this.audioContext.state === 'suspended') {
       this.audioContext.resume();
@@ -71,22 +78,35 @@ export class DrumEngine {
 
     const ctx = this.audioContext;
     const now = ctx.currentTime;
-    const reverbSend = ctx.createGain();
-    reverbSend.gain.value = this.reverbLevel;
     
-    // Connect reverb
+    // Create separate paths for Dry and Wet
+    // This ensures that if Reverb is 0, we still hear the Dry signal.
+    
+    // Dry Path
+    const dryGain = ctx.createGain();
+    dryGain.gain.value = 1.0; // Full dry signal by default
+    dryGain.connect(this.masterGain);
+
+    // Wet Path
+    const wetGain = ctx.createGain();
+    wetGain.gain.value = this.reverbLevel; // Controlled by slider
     if (this.reverbNode) {
-        reverbSend.connect(this.reverbNode);
+        wetGain.connect(this.reverbNode);
         this.reverbNode.connect(this.masterGain);
     }
-    // Also connect dry
-    reverbSend.connect(this.masterGain);
+
+    // Input mixer (so triggers can feed both Dry and Wet)
+    const inputMix = ctx.createGain();
+    inputMix.gain.value = 1.0;
+    inputMix.connect(dryGain);
+    inputMix.connect(wetGain);
 
     // Route trigger based on kit
+    // We pass 'inputMix' as the destination for the synth functions
     if (this.kit === 'acoustic') {
-      this.playAcoustic(pad, now, reverbSend);
+      this.playAcoustic(pad, now, inputMix);
     } else {
-      this.playElectronic(pad, now, reverbSend);
+      this.playElectronic(pad, now, inputMix);
     }
   }
 

@@ -1,4 +1,4 @@
-// Armonix v4.2.0 Update
+// Armonix v4.8.0 Update
 import { QUALITIES, EXTENSIONS, NOTES } from '../constants';
 import { ChordExtensionType, NoteDefinition, NoteNotation } from '../types';
 
@@ -19,10 +19,19 @@ export const getChordMidiNumbers = (
 
   // 3. Map to absolute MIDI notes starting from a base root
   // Start Octave 4 corresponds to 4 * 12 = 48 (C3).
+  // Wait, standard C4 is MIDI 60.
+  // In our visualizer, we use Octave 3 as the start.
+  // Let's assume `startOctave = 4` means C4 (MIDI 60) for the main chord voicing.
   const startOctave = 4; 
   const rootMidi = (startOctave * 12) + rootIndex;
 
-  return finalIntervals.map(interval => rootMidi + interval);
+  const chordNotes = finalIntervals.map(interval => rootMidi + interval);
+  
+  // NEW: Add Bass Note (Left Hand) at Octave 3 (one octave lower)
+  const bassMidi = ((startOctave - 1) * 12) + rootIndex;
+
+  // Combine: [Bass, ...Chord]
+  return [bassMidi, ...chordNotes];
 };
 
 /**
@@ -42,7 +51,7 @@ export const playChordSound = (midiNotes: number[]) => {
 
   const now = audioContext.currentTime;
   // Slower arpeggio for distinct "one by one" feel
-  const arpeggioSpeed = 0.2; 
+  const arpeggioSpeed = 0.15; 
   
   midiNotes.forEach((note, index) => {
     if (!audioContext) return;
@@ -50,9 +59,7 @@ export const playChordSound = (midiNotes: number[]) => {
     const osc = audioContext.createOscillator();
     const gain = audioContext.createGain();
     
-    // Shift up +12 semitones (1 octave) relative to the calculated MIDI for clearer, brighter sound.
-    // Since base is ~48 (C3), adding 12 moves it to ~60 (C4/Middle C). 
-    // If user thinks it's still too low, we can add 24. Let's stick to +12 as requested "una octava más arriba".
+    // Shift up +12 semitones (1 octave) relative to the calculated MIDI for clearer, brighter sound on laptop speakers.
     const playbackNote = note + 12;
 
     // MIDI to Frequency formula

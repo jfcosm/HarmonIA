@@ -1,4 +1,4 @@
-// Armonix v4.4.0 Update
+// Armonix v4.8.0 Update
 import { useState, useEffect, useMemo } from 'react';
 import Piano from './components/Piano';
 import Guitar from './components/Guitar';
@@ -74,7 +74,7 @@ function App() {
 
   // Effects
   useEffect(() => {
-    console.log("Armonix 4.4.0 - System Ready");
+    console.log("Armonix 4.8.0 - System Ready");
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
@@ -87,7 +87,8 @@ function App() {
     if (mode !== 'visualizer') return;
 
     const timer = setTimeout(async () => {
-      if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+      // Direct check for API KEY injection
+      if (process.env.API_KEY) {
         setIsLoadingInsight(true);
         const text = await fetchChordInsight(fullChordNameForAI, language);
         setInsight(text);
@@ -241,6 +242,7 @@ function App() {
                    activeMidiNotes={activeMidiNotes} 
                    rootMidi={activeMidiNotes[0]} 
                    notation={notation}
+                   language={language}
                  />
                ) : (
                  <Guitar 
@@ -267,7 +269,8 @@ function App() {
             </section>
 
             {/* AI Insight Section */}
-            {typeof process !== 'undefined' && process.env && process.env.API_KEY && (
+            {/* Only render if API Key is present. Removed 'process' check for production compat */}
+            {process.env.API_KEY && (
               <section className="max-w-4xl mx-auto px-2 pb-8">
                 <div className="bg-gradient-to-r from-indigo-50 to-white dark:from-slate-800 dark:to-slate-900 p-6 rounded-2xl border border-indigo-100 dark:border-slate-700 shadow-sm relative overflow-hidden transition-colors">
                   <div className="flex items-start gap-3 relative z-10">

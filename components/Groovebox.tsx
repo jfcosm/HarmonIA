@@ -1,4 +1,4 @@
-// Armonix v4.3.0 Update
+// Armonix v4.6.0 Update
 import React, { useState, useEffect, useRef } from 'react';
 import { TRANSLATIONS } from '../constants';
 import { Language, Waveform } from '../types';
@@ -393,7 +393,7 @@ const Groovebox: React.FC<GrooveboxProps> = ({ language }) => {
         setShowSessionModal(false);
         setImportCode("");
     } catch (e) {
-        alert("Invalid Session Code");
+        alert(t.invalidCode || "Invalid Code");
     }
   };
 
@@ -603,7 +603,7 @@ const Groovebox: React.FC<GrooveboxProps> = ({ language }) => {
             <div className="flex flex-col items-center gap-2 pt-4">
                 <div className="inline-flex bg-slate-200 dark:bg-slate-700 p-1.5 pb-3 rounded-xl shadow-inner border border-slate-300 dark:border-slate-600 relative">
                     <span className="absolute -top-5 left-1/2 -translate-x-1/2 text-[9px] text-slate-400 font-bold uppercase tracking-wider">
-                        Target: {activeKeyboardTarget === 'bass' ? 'Bass' : 'Synx'} Pitch
+                        {t.targetPitch}: {activeKeyboardTarget === 'bass' ? 'Bass' : 'Synx'}
                     </span>
                     <div className="flex relative mt-1">
                         {KEYS.map((note, i) => {
@@ -635,13 +635,13 @@ const Groovebox: React.FC<GrooveboxProps> = ({ language }) => {
                     
                     {sessionCode ? (
                         <div className="space-y-4">
-                            <p className="text-sm text-slate-500">Save this code to restore your session later.</p>
+                            <p className="text-sm text-slate-500">{t.saveCodeInfo}</p>
                             <div className="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg font-mono text-xs break-all border border-slate-200 dark:border-slate-700 max-h-40 overflow-y-auto">
                                 {sessionCode}
                             </div>
                             <div className="flex gap-2">
                                 <button onClick={copyToClipboard} className="flex-1 bg-indigo-600 text-white py-2 rounded-lg font-bold text-sm hover:bg-indigo-700 flex items-center justify-center gap-2">
-                                    {copied ? <Check size={16} /> : <Copy size={16} />} {copied ? 'Copied' : t.copy}
+                                    {copied ? <Check size={16} /> : <Copy size={16} />} {copied ? t.copied : t.copy}
                                 </button>
                                 <button onClick={() => setShowSessionModal(false)} className="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-sm font-bold text-slate-600 dark:text-slate-300">
                                     {t.close}
@@ -653,7 +653,7 @@ const Groovebox: React.FC<GrooveboxProps> = ({ language }) => {
                             <textarea 
                                 value={importCode}
                                 onChange={(e) => setImportCode(e.target.value)}
-                                placeholder="Paste your session code here..."
+                                placeholder={t.pasteCodeInfo}
                                 className="w-full h-32 p-3 bg-slate-100 dark:bg-slate-800 rounded-lg text-xs font-mono border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
                             />
                             <div className="flex gap-2">
